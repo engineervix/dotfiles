@@ -13,8 +13,8 @@ install.sh                      # Bootstrap: creates all symlinks, safe to re-ru
 .zshrc.local                    # Machine-specific overrides (not tracked)
 .gnupg/
 └── gpg-agent.conf              # GPG agent passphrase cache (24h TTL)
-cheatsheets/                    # HTML quick-reference sheets
 docs/
+├── cheatsheets/                # HTML quick-reference sheets
 └── post-setup.md               # Architecture decisions and setup notes
 scripts/
 └── setup-sddm.sh               # Sync wallpaper to SDDM login screen
