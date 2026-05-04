@@ -1,3 +1,9 @@
+---
+title: Post-Setup (Hyprland / openSUSE)
+parent: Notes
+nav_order: 1
+---
+
 # Post-Setup Documentation: Hyprland on openSUSE Tumbleweed
 
 This document outlines the architectural changes and configuration logic applied to this workstation on March 22, 2026.
