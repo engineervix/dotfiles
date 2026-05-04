@@ -15,14 +15,17 @@ This document outlines the architectural changes and configuration logic applied
 ## 3. Configuration Architecture (Dotfiles)
 - **Change:** Centralized configurations into a `~/dotfiles` repository using a "Symlink-only" approach.
 - **Structure:**
+  - `~/.config/chrome-flags.conf` -> `~/dotfiles/.config/chrome-flags.conf`
   - `~/.config/dunst` -> `~/dotfiles/.config/dunst`
   - `~/.config/hypr` -> `~/dotfiles/.config/hypr`
   - `~/.config/imv` -> `~/dotfiles/.config/imv`
   - `~/.config/kitty` -> `~/dotfiles/.config/kitty`
   - `~/.config/mimeapps.list` -> `~/dotfiles/.config/mimeapps.list`
   - `~/.config/rofi` -> `~/dotfiles/.config/rofi`
+  - `~/.config/starship.toml` -> `~/dotfiles/.config/starship.toml`
   - `~/.config/Thunar` -> `~/dotfiles/.config/Thunar`
   - `~/.config/waybar` -> `~/dotfiles/.config/waybar`
+  - `~/.config/wireplumber/wireplumber.conf.d` -> `~/dotfiles/.config/wireplumber/wireplumber.conf.d`
 - **Bootstrap:** Run `~/dotfiles/install.sh` to create all symlinks on a fresh machine. It backs up any existing file or directory before replacing it and is safe to re-run.
 - **Exclusion:** `~/.config/nvim` remains an independent repository (Git Submodule candidate) as it is already a managed fork of `kickstart.nvim`.
 - **Rationale:** Facilitates version control, easy backups, and portability across machines while respecting existing Git hierarchies.

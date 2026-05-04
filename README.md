@@ -1,14 +1,20 @@
-# victor-dotfiles
+# dotfiles
 
 Personal configurations for a productivity-focused Hyprland environment on openSUSE Tumbleweed.
 
 ## Directory Structure
 
 ```text
+install.sh                      # Bootstrap: creates all symlinks, safe to re-run
 .zshrc                          # Shell config (SSH + GPG agent, PATH, tools)
 .zshrc.local                    # Machine-specific overrides (not tracked)
 .gnupg/
 └── gpg-agent.conf              # GPG agent passphrase cache (24h TTL)
+cheatsheets/                    # HTML quick-reference sheets
+docs/
+└── post-setup.md               # Architecture decisions and setup notes
+scripts/
+└── setup-sddm.sh               # Sync wallpaper to SDDM login screen
 .config/
 ├── hypr/
 │   ├── conf/                   # Modular Hyprland settings
@@ -34,7 +40,14 @@ Personal configurations for a productivity-focused Hyprland environment on openS
 │   └── config.rasi             # App launcher (Catppuccin Mocha theme)
 ├── waybar/
 │   ├── config                  # Status bar layout
-│   └── style.css               # Status bar styling
+│   ├── colors.css              # Catppuccin Mocha colour tokens
+│   ├── modules.json            # Module definitions
+│   ├── style.css               # Status bar styling
+│   └── scripts/
+│       └── weather.sh          # Weather widget (wttr.in)
+├── wireplumber/
+│   └── wireplumber.conf.d/     # Bluetooth audio policy
+├── chrome-flags.conf           # Chrome/Chromium startup flags
 ├── Thunar/                     # File manager config
 ├── mimeapps.list               # Default app associations
 └── starship.toml               # Shell prompt
