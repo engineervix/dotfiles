@@ -108,4 +108,4 @@ On a fresh openSUSE Tumbleweed install, the dotfiles bootstrap is handled automa
 - **Keyboard Layout:** en-gb (`gb`)
 - **Login Manager:** SDDM (auto-login disabled)
 
-*Refer to POST_SETUP.md for full details on the configuration architecture.*
+*Refer to [docs/post-setup.md](docs/post-setup.md) for full details on the configuration architecture.*
