@@ -17,7 +17,8 @@ install.sh                      # Bootstrap: creates all symlinks, safe to re-ru
 └── gpg-agent.conf              # GPG agent passphrase cache (24h TTL)
 docs/
 ├── cheatsheets/                # HTML quick-reference sheets
-└── post-setup.md               # Architecture decisions and setup notes
+└── notes/
+    └── post-setup.md           # Architecture decisions and setup notes
 scripts/
 └── setup-sddm.sh               # Sync wallpaper to SDDM login screen
 .config/
@@ -126,7 +127,7 @@ On a fresh openSUSE Tumbleweed install, the dotfiles bootstrap is handled automa
 - **Keyboard Layout:** en-gb (`gb`)
 - **Login Manager:** SDDM (auto-login disabled)
 
-_Refer to [docs/post-setup.md](docs/post-setup.md) for full details on the configuration architecture._
+_Refer to [docs/notes/post-setup.md](docs/notes/post-setup.md) for full details on the configuration architecture._
 
 ## Credits
 
