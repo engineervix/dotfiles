@@ -2,6 +2,8 @@
 
 # SDDM Setup Script for UK Layout and ML4W Theme
 # This script should be run with sudo
+#
+# Adapted from: https://github.com/mylinuxforwork/dotfiles/blob/master/dotfiles/.config/ml4w/scripts/ml4w-install-sddm
 
 set -e # Exit on error
 

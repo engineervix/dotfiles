@@ -125,3 +125,10 @@ On a fresh openSUSE Tumbleweed install, the dotfiles bootstrap is handled automa
 - **Login Manager:** SDDM (auto-login disabled)
 
 _Refer to [docs/post-setup.md](docs/post-setup.md) for full details on the configuration architecture._
+
+## Credits
+
+- [mylinuxforwork/dotfiles](https://github.com/mylinuxforwork/dotfiles) — ML4W Hyprland dotfiles, primary inspiration
+- [mylinuxforwork/hyprland-starter](https://github.com/mylinuxforwork/hyprland-starter) — minimal Hyprland starter config
+- [mylinuxforwork/ml4w-dotfiles-installer](https://github.com/mylinuxforwork/ml4w-dotfiles-installer) — dotfiles installer tooling
+- [Hyprland Wiki](https://wiki.hyprland.org/) — official Hyprland documentation
