@@ -3,6 +3,8 @@
 ![openSUSE](https://img.shields.io/badge/openSUSE-%2364B345?style=for-the-badge&logo=openSUSE&logoColor=white)
 ![Bash Script](https://img.shields.io/badge/bash_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white)
 
+[![Docs](https://github.com/engineervix/dotfiles/actions/workflows/deploy.yml/badge.svg)](https://github.com/engineervix/dotfiles/actions/workflows/deploy.yml)
+
 Personal configurations for a productivity-focused Hyprland environment on openSUSE Tumbleweed.
 
 ## Directory Structure
