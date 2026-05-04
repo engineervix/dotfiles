@@ -1,5 +1,8 @@
 # dotfiles
 
+![openSUSE](https://img.shields.io/badge/openSUSE-%2364B345?style=for-the-badge&logo=openSUSE&logoColor=white)
+![Bash Script](https://img.shields.io/badge/bash_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white)
+
 Personal configurations for a productivity-focused Hyprland environment on openSUSE Tumbleweed.
 
 ## Directory Structure
@@ -55,32 +58,32 @@ scripts/
 
 ## Key Bindings (SUPER)
 
-| Binding | Action |
-|---|---|
-| `Q` | Terminal (Kitty) |
-| `R` | App launcher (Rofi) |
-| `E` | File manager (Thunar) |
-| `C` | Kill active window |
-| `V` | Toggle floating |
-| `L` | Lock screen (hyprlock) |
-| `M` | Exit Hyprland |
-| `SHIFT+M` | Logout menu (wlogout) |
-| `H` | Clipboard history (cliphist + Rofi) |
-| `W` | Enter resize mode (arrow keys to resize, `ESC`/`ENTER` to exit) |
-| `SHIFT+B` | Reload Waybar |
-| `1-0` | Switch workspaces |
-| `TAB` | Toggle between last two workspaces |
-| `SHIFT+left/right` | Move active window to prev/next workspace |
-| `SHIFT+1-0` | Move active window to workspace |
-| `Arrow keys` | Move focus |
-| `SHIFT+hjkl` | Move windows |
-| `G` | Toggle window group |
-| `[` / `]` | Cycle group tabs |
-| `CTRL+G` / `ALT+G` | Move window out of / into group |
-| `ALT+TAB` | Window switcher (Rofi, all workspaces) |
-| `Print` | Screenshot to file |
-| `SUPER+Print` | Screenshot selection to clipboard |
-| `SUPER+SHIFT+Print` | Screenshot selection to file |
+| Binding             | Action                                                          |
+| ------------------- | --------------------------------------------------------------- |
+| `Q`                 | Terminal (Kitty)                                                |
+| `R`                 | App launcher (Rofi)                                             |
+| `E`                 | File manager (Thunar)                                           |
+| `C`                 | Kill active window                                              |
+| `V`                 | Toggle floating                                                 |
+| `L`                 | Lock screen (hyprlock)                                          |
+| `M`                 | Exit Hyprland                                                   |
+| `SHIFT+M`           | Logout menu (wlogout)                                           |
+| `H`                 | Clipboard history (cliphist + Rofi)                             |
+| `W`                 | Enter resize mode (arrow keys to resize, `ESC`/`ENTER` to exit) |
+| `SHIFT+B`           | Reload Waybar                                                   |
+| `1-0`               | Switch workspaces                                               |
+| `TAB`               | Toggle between last two workspaces                              |
+| `SHIFT+left/right`  | Move active window to prev/next workspace                       |
+| `SHIFT+1-0`         | Move active window to workspace                                 |
+| `Arrow keys`        | Move focus                                                      |
+| `SHIFT+hjkl`        | Move windows                                                    |
+| `G`                 | Toggle window group                                             |
+| `[` / `]`           | Cycle group tabs                                                |
+| `CTRL+G` / `ALT+G`  | Move window out of / into group                                 |
+| `ALT+TAB`           | Window switcher (Rofi, all workspaces)                          |
+| `Print`             | Screenshot to file                                              |
+| `SUPER+Print`       | Screenshot selection to clipboard                               |
+| `SUPER+SHIFT+Print` | Screenshot selection to file                                    |
 
 ## Changing the Wallpaper
 
@@ -121,4 +124,4 @@ On a fresh openSUSE Tumbleweed install, the dotfiles bootstrap is handled automa
 - **Keyboard Layout:** en-gb (`gb`)
 - **Login Manager:** SDDM (auto-login disabled)
 
-*Refer to [docs/post-setup.md](docs/post-setup.md) for full details on the configuration architecture.*
+_Refer to [docs/post-setup.md](docs/post-setup.md) for full details on the configuration architecture._
