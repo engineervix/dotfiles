@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neovim Cheatsheet</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+      :root {
+        --base: #1e1e2e;
+        --mantle: #181825;
+        --crust: #11111b;
+        --surface0: #313244;
+        --surface1: #45475a;
+        --surface2: #585b70;
+        --overlay0: #6c7086;
+        --text: #cdd6f4;
+        --subtext0: #a6adc8;
+        --lavender: #b4befe;
+        --blue: #89b4fa;
+        --sapphire: #74c7ec;
+        --sky: #89dceb;
+        --teal: #94e2d5;
+        --green: #a6e3a1;
+        --yellow: #f9e2af;
+        --peach: #fab387;
+        --maroon: #eba0ac;
+        --red: #f38ba8;
+        --mauve: #cba6f7;
+        --pink: #f5c2e7;
+        --flamingo: #f2cdcd;
+        --rosewater: #f5e0dc;
+      }
+
+      html { font-size: 16px; }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--crust);
+        color: var(--text);
+        font-family: "JetBrains Mono", "Cascadia Code", "Fira Code", monospace;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        padding: 1.5rem 1.25rem 2.5rem;
+        min-height: 100vh;
+        background-image: radial-gradient(
+          ellipse 80% 40% at 50% -10%,
+          rgba(137, 180, 250, 0.06) 0%,
+          transparent 70%
+        );
+      }
+
+      /* ── Header ──────────────────────────────────────── */
+      header {
+        text-align: center;
+        margin-bottom: 1.75rem;
+      }
+
+      header h1 {
+        font-size: 1.625rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--text);
+        text-transform: uppercase;
+      }
+
+      header h1 span { color: var(--blue); }
+
+      header p {
+        color: var(--overlay0);
+        font-size: 0.8125rem;
+        letter-spacing: 0.06em;
+        margin-top: 0.25rem;
+        text-transform: uppercase;
+      }
+
+      .header-rule {
+        width: 3.75rem;
+        height: 1px;
+        background: var(--blue);
+        margin: 0.625rem auto 0;
+        opacity: 0.5;
+      }
+
+      /* ── Grid ────────────────────────────────────────── */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.875rem;
+        max-width: 81.25rem;
+        margin: 0 auto;
+      }
+
+      .span2 { grid-column: span 2; }
+      .span3 { grid-column: span 3; }
+
+      /* ── Cards ───────────────────────────────────────── */
+      .card {
+        background: var(--base);
+        border-radius: 0.5rem;
+        border: 1px solid var(--surface0);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 0.875rem;
+        border-bottom: 1px solid var(--surface0);
+        background: color-mix(in srgb, currentColor 8%, transparent);
+      }
+
+      .card-header svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        flex-shrink: 0;
+        opacity: 0.9;
+      }
+
+      .card-header h2 {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .card[data-accent="blue"]    .card-header { color: var(--blue); }
+      .card[data-accent="sapphire"].card-header { color: var(--sapphire); }
+      .card[data-accent="green"]   .card-header { color: var(--green); }
+      .card[data-accent="yellow"]  .card-header { color: var(--yellow); }
+      .card[data-accent="peach"]   .card-header { color: var(--peach); }
+      .card[data-accent="red"]     .card-header { color: var(--red); }
+      .card[data-accent="teal"]    .card-header { color: var(--teal); }
+      .card[data-accent="mauve"]   .card-header { color: var(--mauve); }
+      .card[data-accent="lavender"].card-header { color: var(--lavender); }
+      .card[data-accent="pink"]    .card-header { color: var(--pink); }
+      .card[data-accent="sky"]     .card-header { color: var(--sky); }
+
+      .card-body {
+        padding: 0.5rem 0.875rem 0.75rem;
+        flex: 1;
+      }
+
+      /* ── Binding rows ─────────────────────────────────── */
+      .binding {
+        display: flex;
+        align-items: baseline;
+        gap: 0.625rem;
+        padding: 0.25rem 0;
+        border-bottom: 1px solid var(--surface0);
+      }
+
+      .binding:last-child { border-bottom: none; }
+
+      .binding-keys {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.1875rem;
+        flex-shrink: 0;
+        min-width: 10.5rem;
+        max-width: 10.5rem;
+        align-items: center;
+      }
+
+      .binding-desc {
+        color: var(--subtext0);
+        font-size: 0.875rem;
+        flex: 1;
+        line-height: 1.4;
+      }
+
+      .binding-desc em {
+        font-style: normal;
+        color: var(--overlay0);
+        font-size: 0.8rem;
+      }
+
+      /* ── kbd ──────────────────────────────────────────── */
+      kbd {
+        display: inline-block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.125rem 0.4375rem;
+        border-radius: 0.25rem;
+        background: var(--surface0);
+        border: 1px solid var(--surface1);
+        line-height: 1.6;
+        white-space: nowrap;
+        letter-spacing: 0.01em;
+      }
+
+      .card[data-accent="blue"]    kbd { color: var(--blue);    border-color: color-mix(in srgb, var(--blue)    30%, var(--surface1)); }
+      .card[data-accent="sapphire"]kbd { color: var(--sapphire);border-color: color-mix(in srgb, var(--sapphire)30%, var(--surface1)); }
+      .card[data-accent="green"]   kbd { color: var(--green);   border-color: color-mix(in srgb, var(--green)   30%, var(--surface1)); }
+      .card[data-accent="yellow"]  kbd { color: var(--yellow);  border-color: color-mix(in srgb, var(--yellow)  30%, var(--surface1)); }
+      .card[data-accent="peach"]   kbd { color: var(--peach);   border-color: color-mix(in srgb, var(--peach)   30%, var(--surface1)); }
+      .card[data-accent="red"]     kbd { color: var(--red);     border-color: color-mix(in srgb, var(--red)     30%, var(--surface1)); }
+      .card[data-accent="teal"]    kbd { color: var(--teal);    border-color: color-mix(in srgb, var(--teal)    30%, var(--surface1)); }
+      .card[data-accent="mauve"]   kbd { color: var(--mauve);   border-color: color-mix(in srgb, var(--mauve)   30%, var(--surface1)); }
+      .card[data-accent="lavender"]kbd { color: var(--lavender);border-color: color-mix(in srgb, var(--lavender)30%, var(--surface1)); }
+      .card[data-accent="pink"]    kbd { color: var(--pink);    border-color: color-mix(in srgb, var(--pink)    30%, var(--surface1)); }
+      .card[data-accent="sky"]     kbd { color: var(--sky);     border-color: color-mix(in srgb, var(--sky)     30%, var(--surface1)); }
+
+      .sep {
+        color: var(--overlay0);
+        font-size: 0.6875rem;
+      }
+
+      /* ── Sub-headings inside cards ───────────────────── */
+      .sub-heading {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--overlay0);
+        margin: 0.625rem 0 0.125rem;
+      }
+
+      /* ── Two-col card body ────────────────────────────── */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 1.5rem;
+      }
+
+      /* ── Mode badge ──────────────────────────────────── */
+      .mode {
+        display: inline-block;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.05rem 0.3rem;
+        border-radius: 0.2rem;
+        vertical-align: middle;
+        margin-right: 0.15rem;
+        flex-shrink: 0;
+      }
+      .mode-n { background: color-mix(in srgb, var(--blue) 20%, transparent); color: var(--blue); border: 1px solid color-mix(in srgb, var(--blue) 40%, transparent); }
+      .mode-v { background: color-mix(in srgb, var(--mauve) 20%, transparent); color: var(--mauve); border: 1px solid color-mix(in srgb, var(--mauve) 40%, transparent); }
+      .mode-i { background: color-mix(in srgb, var(--green) 20%, transparent); color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 40%, transparent); }
+
+      /* ── Footer ──────────────────────────────────────── */
+      footer {
+        text-align: center;
+        margin-top: 1.25rem;
+        color: var(--overlay0);
+        font-size: 0.8125rem;
+        letter-spacing: 0.04em;
+      }
+      footer strong { color: var(--subtext0); }
+      .dot { margin: 0 0.375rem; opacity: 0.5; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Neo<span>vim</span> Cheatsheet</h1>
+      <p>kickstart.nvim · Catppuccin Mocha · openSUSE Tumbleweed</p>
+      <div class="header-rule"></div>
+    </header>
+
+    <div class="grid">
+
+      <!-- ── 1. Modes ─────────────────────────────────── -->
+      <div class="card" data-accent="blue">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="80" cy="80" r="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="176" cy="80" r="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="80" cy="176" r="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="176" cy="176" r="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Modes</h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>Esc</kbd></div>
+            <div class="binding-desc">→ Normal mode <em>(always)</em></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>i</kbd></div>
+            <div class="binding-desc">→ Insert before cursor</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>a</kbd></div>
+            <div class="binding-desc">→ Insert after cursor</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>I</kbd></div>
+            <div class="binding-desc">→ Insert at line start</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>A</kbd></div>
+            <div class="binding-desc">→ Insert at line end</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>o</kbd> / <kbd>O</kbd></div>
+            <div class="binding-desc">New line below / above</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>v</kbd></div>
+            <div class="binding-desc">→ Visual (char)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>V</kbd></div>
+            <div class="binding-desc">→ Visual line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>v</kbd></div>
+            <div class="binding-desc">→ Visual block</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:</kbd></div>
+            <div class="binding-desc">→ Command mode</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2. Navigation ─────────────────────────────── -->
+      <div class="card" data-accent="sapphire">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polygon points="176 80 112 112 80 176 144 144 176 80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Navigation</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Word / Line</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>w</kbd> / <kbd>b</kbd></div>
+            <div class="binding-desc">Next / prev word start</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>e</kbd></div>
+            <div class="binding-desc">Word end</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>0</kbd> / <kbd>$</kbd></div>
+            <div class="binding-desc">Line start / end</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>^</kbd></div>
+            <div class="binding-desc">First non-blank char</div>
+          </div>
+          <div class="sub-heading">File</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>gg</kbd> / <kbd>G</kbd></div>
+            <div class="binding-desc">File top / bottom</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>{n}</kbd><kbd>G</kbd></div>
+            <div class="binding-desc">Go to line n</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>d</kbd> / <kbd>u</kbd></div>
+            <div class="binding-desc">Half-page down / up</div>
+          </div>
+          <div class="sub-heading">Screen</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zz</kbd></div>
+            <div class="binding-desc">Centre cursor on screen</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>H</kbd> / <kbd>M</kbd> / <kbd>L</kbd></div>
+            <div class="binding-desc">Top / mid / bottom of screen</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>%</kbd></div>
+            <div class="binding-desc">Jump to matching bracket</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>o</kbd> / <kbd>i</kbd></div>
+            <div class="binding-desc">Jump back / forward in history</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3. Editing Essentials ──────────────────────── -->
+      <div class="card" data-accent="green">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M92.69,216H48a8,8,0,0,1-8-8V163.31a8,8,0,0,1,2.34-5.65L165.66,34.34a8,8,0,0,1,11.31,0L221.66,79a8,8,0,0,1,0,11.31L98.34,213.66A8,8,0,0,1,92.69,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="164" y1="92" x2="68" y2="188" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="95.49" y1="215.49" x2="40.51" y2="160.51" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Editing</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Change / Delete</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>x</kbd></div>
+            <div class="binding-desc">Delete char under cursor</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>dd</kbd></div>
+            <div class="binding-desc">Delete line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>dw</kbd> / <kbd>de</kbd></div>
+            <div class="binding-desc">Delete word / to end</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>D</kbd></div>
+            <div class="binding-desc">Delete to end of line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>cc</kbd> / <kbd>C</kbd></div>
+            <div class="binding-desc">Change line / to end</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ciw</kbd></div>
+            <div class="binding-desc">Change inner word <em>(cursor anywhere)</em></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ci"</kbd> <kbd>ci(</kbd></div>
+            <div class="binding-desc">Change inside quotes / parens</div>
+          </div>
+          <div class="sub-heading">Copy / Paste</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>yy</kbd></div>
+            <div class="binding-desc">Yank (copy) line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>yiw</kbd></div>
+            <div class="binding-desc">Yank inner word</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>p</kbd> / <kbd>P</kbd></div>
+            <div class="binding-desc">Paste after / before</div>
+          </div>
+          <div class="sub-heading">Other</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>u</kbd> / <kbd>Ctrl</kbd><span class="sep">+</span><kbd>r</kbd></div>
+            <div class="binding-desc">Undo / Redo</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>.</kbd></div>
+            <div class="binding-desc">Repeat last change</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>r{c}</kbd></div>
+            <div class="binding-desc">Replace char with c</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>~</kbd></div>
+            <div class="binding-desc">Toggle case</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>J</kbd></div>
+            <div class="binding-desc">Join line below</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>yyp</kbd></div>
+            <div class="binding-desc">Duplicate line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>&gt;&gt;</kbd> / <kbd>&lt;&lt;</kbd></div>
+            <div class="binding-desc">Indent / dedent line</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 4. Search & Replace ───────────────────────── -->
+      <div class="card" data-accent="yellow">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Search &amp; Replace</h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>/pattern</kbd></div>
+            <div class="binding-desc">Search forward</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>?pattern</kbd></div>
+            <div class="binding-desc">Search backward</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>n</kbd> / <kbd>N</kbd></div>
+            <div class="binding-desc">Next / prev match</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>*</kbd> / <kbd>#</kbd></div>
+            <div class="binding-desc">Search word under cursor fwd/bwd</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Esc</kbd></div>
+            <div class="binding-desc">Clear search highlights</div>
+          </div>
+          <div class="sub-heading">Substitute</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:s/old/new</kbd></div>
+            <div class="binding-desc">Replace first on line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:s/old/new/g</kbd></div>
+            <div class="binding-desc">Replace all on line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:%s/old/new/g</kbd></div>
+            <div class="binding-desc">Replace all in file</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:%s/old/new/gc</kbd></div>
+            <div class="binding-desc">Replace with confirmation</div>
+          </div>
+          <div class="sub-heading">Multi-change</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>/word</kbd> → <kbd>cgn</kbd></div>
+            <div class="binding-desc">Change next match, then <kbd>.</kbd> to repeat</div>
+          </div>
+          <div class="sub-heading">Telescope (Fuzzy)</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sg</kbd></div>
+            <div class="binding-desc">Live grep across project</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sw</kbd></div>
+            <div class="binding-desc">Search word under cursor</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>/</kbd></div>
+            <div class="binding-desc">Fuzzy search in current buffer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5. Files & Buffers ────────────────────────── -->
+      <div class="card" data-accent="peach">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M168,224H56a8,8,0,0,1-8-8V72a8,8,0,0,1,8-8h80l40,40V216A8,8,0,0,1,168,224Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M80,64V40a8,8,0,0,1,8-8h80l40,40V184a8,8,0,0,1-8,8H176" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="152" x2="136" y2="152" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="184" x2="136" y2="184" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Files &amp; Buffers</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Telescope</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sf</kbd></div>
+            <div class="binding-desc">Find files</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>s.</kbd></div>
+            <div class="binding-desc">Recent files</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>Space</kbd></div>
+            <div class="binding-desc">Open buffer list</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sn</kbd></div>
+            <div class="binding-desc">Find Neovim config files</div>
+          </div>
+          <div class="sub-heading">Commands</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:w</kbd></div>
+            <div class="binding-desc">Save file</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:q</kbd> / <kbd>:q!</kbd></div>
+            <div class="binding-desc">Quit / force quit</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:wq</kbd></div>
+            <div class="binding-desc">Save and quit</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:e {file}</kbd></div>
+            <div class="binding-desc">Open / edit a file</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:bn</kbd> / <kbd>:bp</kbd></div>
+            <div class="binding-desc">Next / prev buffer</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:bd</kbd></div>
+            <div class="binding-desc">Close buffer</div>
+          </div>
+          <div class="sub-heading">Neo-tree</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>\</kbd></div>
+            <div class="binding-desc">Toggle file explorer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6. Splits & Windows ───────────────────────── -->
+      <div class="card" data-accent="teal">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="104" y1="48" x2="104" y2="208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="152" y1="48" x2="152" y2="208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="152" y1="128" x2="232" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="24" y1="128" x2="104" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="200 96 232 128 200 160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="56 96 24 128 56 160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Splits &amp; Windows</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Open</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:sp</kbd></div>
+            <div class="binding-desc">Horizontal split</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:vsp</kbd></div>
+            <div class="binding-desc">Vertical split</div>
+          </div>
+          <div class="sub-heading">Navigate</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>h/j/k/l</kbd></div>
+            <div class="binding-desc">Move focus left/down/up/right</div>
+          </div>
+          <div class="sub-heading">Resize</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>w</kbd> <kbd>=</kbd></div>
+            <div class="binding-desc">Equalise split sizes</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>w</kbd> <kbd>&gt;/&lt;</kbd></div>
+            <div class="binding-desc">Widen / narrow split</div>
+          </div>
+          <div class="sub-heading">Manage</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>w</kbd> <kbd>o</kbd></div>
+            <div class="binding-desc">Close all other windows</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>w</kbd> <kbd>q</kbd></div>
+            <div class="binding-desc">Close this window</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 7. LSP ─────────────────────────────────────── -->
+      <div class="card span2" data-accent="mauve">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="64 88 16 128 64 168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="192 88 240 128 192 168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="160" y1="40" x2="96" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>LSP — Code Intelligence</h2>
+        </div>
+        <div class="card-body two-col">
+          <div>
+            <div class="sub-heading">Navigate</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>grd</kbd></div>
+              <div class="binding-desc">Go to definition</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>grr</kbd></div>
+              <div class="binding-desc">Go to references</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>gri</kbd></div>
+              <div class="binding-desc">Go to implementation</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>grt</kbd></div>
+              <div class="binding-desc">Go to type definition</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>grD</kbd></div>
+              <div class="binding-desc">Go to declaration</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>t</kbd></div>
+              <div class="binding-desc">Jump back (after goto)</div>
+            </div>
+            <div class="sub-heading">Symbols</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>gO</kbd></div>
+              <div class="binding-desc">Document symbols</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>gW</kbd></div>
+              <div class="binding-desc">Workspace symbols</div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-heading">Actions</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>K</kbd></div>
+              <div class="binding-desc">Hover docs / signature</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>grn</kbd></div>
+              <div class="binding-desc">Rename symbol (project-wide)</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>gra</kbd></div>
+              <div class="binding-desc">Code action</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>f</kbd></div>
+              <div class="binding-desc">Format buffer</div>
+            </div>
+            <div class="sub-heading">Diagnostics</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>[d</kbd> / <kbd>]d</kbd></div>
+              <div class="binding-desc">Prev / next diagnostic</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sd</kbd></div>
+              <div class="binding-desc">Search diagnostics list</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>q</kbd></div>
+              <div class="binding-desc">Diagnostic quickfix list</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>th</kbd></div>
+              <div class="binding-desc">Toggle inlay hints</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 8. Telescope ──────────────────────────────── -->
+      <div class="card" data-accent="lavender">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="104" y1="88" x2="152" y2="88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M229.59,154.32,185.94,55A24,24,0,0,0,152,55V168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M104,168V55a24,24,0,0,0-33.94,0L26.41,154.32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="64" cy="168" r="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="192" cy="168" r="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Telescope</h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sf</kbd></div>
+            <div class="binding-desc">Find files</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sg</kbd></div>
+            <div class="binding-desc">Live grep (ripgrep)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sh</kbd></div>
+            <div class="binding-desc">Search help tags</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sk</kbd></div>
+            <div class="binding-desc">Search keymaps</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sc</kbd></div>
+            <div class="binding-desc">Search commands</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>ss</kbd></div>
+            <div class="binding-desc">Select Telescope picker</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>sr</kbd></div>
+            <div class="binding-desc">Resume last search</div>
+          </div>
+          <div class="sub-heading">Inside Telescope</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>/</kbd></div>
+            <div class="binding-desc">Show all keymaps <em>(insert mode)</em></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>?</kbd></div>
+            <div class="binding-desc">Show all keymaps <em>(normal mode)</em></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>c</kbd></div>
+            <div class="binding-desc">Close picker</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 9. Git / Gitsigns ─────────────────────────── -->
+      <div class="card" data-accent="green">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M80,168V144a16,16,0,0,1,16-16h88a16,16,0,0,0,16-16V88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="80" y1="88" x2="80" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="80" cy="64" r="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="200" cy="64" r="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="80" cy="192" r="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Git / Gitsigns</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Hunk Navigation</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>]h</kbd> / <kbd>[h</kbd></div>
+            <div class="binding-desc">Next / prev hunk</div>
+          </div>
+          <div class="sub-heading">Hunk Actions</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hs</kbd></div>
+            <div class="binding-desc">Stage hunk</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hr</kbd></div>
+            <div class="binding-desc">Reset hunk</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hS</kbd></div>
+            <div class="binding-desc">Stage buffer</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hu</kbd></div>
+            <div class="binding-desc">Undo stage hunk</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hp</kbd></div>
+            <div class="binding-desc">Preview hunk diff</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hb</kbd></div>
+            <div class="binding-desc">Blame line</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>hd</kbd></div>
+            <div class="binding-desc">Diff this file</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>tb</kbd></div>
+            <div class="binding-desc">Toggle current line blame</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 10. Text Objects ──────────────────────────── -->
+      <div class="card" data-accent="sky">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="128" y1="56" x2="128" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="56 88 56 56 200 56 200 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="96" y1="200" x2="160" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Text Objects <em style="font-size:0.7rem;color:var(--overlay0);font-weight:400;letter-spacing:0">(d/c/y + i/a + obj)</em></h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>iw</kbd> / <kbd>aw</kbd></div>
+            <div class="binding-desc">Inner / around word</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>is</kbd> / <kbd>as</kbd></div>
+            <div class="binding-desc">Inner / around sentence</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ip</kbd> / <kbd>ap</kbd></div>
+            <div class="binding-desc">Inner / around paragraph</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>i"</kbd> <kbd>i'</kbd> <kbd>i`</kbd></div>
+            <div class="binding-desc">Inside quotes</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>i(</kbd> <kbd>i[</kbd> <kbd>i{</kbd></div>
+            <div class="binding-desc">Inside brackets / braces</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>it</kbd></div>
+            <div class="binding-desc">Inside HTML tag</div>
+          </div>
+          <div class="sub-heading">Examples</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>diw</kbd></div>
+            <div class="binding-desc">Delete inner word</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ci(</kbd></div>
+            <div class="binding-desc">Change inside parens</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ya"</kbd></div>
+            <div class="binding-desc">Yank including quotes</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>vap</kbd></div>
+            <div class="binding-desc">Visually select paragraph</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 11. Folds ─────────────────────────────────── -->
+      <div class="card" data-accent="red">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="208 96 128 176 48 96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Folds</h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>za</kbd></div>
+            <div class="binding-desc">Toggle fold under cursor</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zc</kbd> / <kbd>zo</kbd></div>
+            <div class="binding-desc">Close / open fold</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zM</kbd></div>
+            <div class="binding-desc">Close all folds</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zR</kbd></div>
+            <div class="binding-desc">Open all folds</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zj</kbd> / <kbd>zk</kbd></div>
+            <div class="binding-desc">Next / prev fold</div>
+          </div>
+          <div class="sub-heading">Setup (in init.lua)</div>
+          <div class="binding">
+            <div class="binding-keys" style="min-width:auto;max-width:none;font-size:0.7rem;color:var(--overlay0)"><kbd style="font-size:0.65rem">foldmethod=expr</kbd></div>
+            <div class="binding-desc"><em>Treesitter-based folds</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 12. Macros & Registers ────────────────────── -->
+      <div class="card" data-accent="pink">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/><circle cx="128" cy="128" r="64" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/></svg>
+          <h2>Macros &amp; Registers</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Macros</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>q{a}</kbd></div>
+            <div class="binding-desc">Record macro into register a</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>q</kbd></div>
+            <div class="binding-desc">Stop recording</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>@{a}</kbd></div>
+            <div class="binding-desc">Play macro from register a</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>@@</kbd></div>
+            <div class="binding-desc">Replay last macro</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>{n}@@</kbd></div>
+            <div class="binding-desc">Replay macro n times</div>
+          </div>
+          <div class="sub-heading">Registers</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>:reg</kbd></div>
+            <div class="binding-desc">Show all registers</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>"{a}y</kbd></div>
+            <div class="binding-desc">Yank into register a</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>"{a}p</kbd></div>
+            <div class="binding-desc">Paste from register a</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>"+y</kbd> / <kbd>"+p</kbd></div>
+            <div class="binding-desc">System clipboard yank / paste</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 13. Completion ────────────────────────────── -->
+      <div class="card" data-accent="sapphire">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M88,136a40,40,0,1,1-40,40v-6.73" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M168,136a40,40,0,1,0,40,40v-6.73" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M72,172H64A48,48,0,0,1,48,78.73V72a40,40,0,0,1,80,0V176" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M184,172h8a48,48,0,0,0,16-93.27V72a40,40,0,0,0-80,0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M200,112h-4a28,28,0,0,1-28-28V80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M56,112h4A28,28,0,0,0,88,84V80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Completion (blink.cmp)</h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>Space</kbd></div>
+            <div class="binding-desc">Open menu / show docs</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>n</kbd> / <kbd>p</kbd></div>
+            <div class="binding-desc">Next / prev item</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>y</kbd></div>
+            <div class="binding-desc">Accept selection <em>(yes)</em></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>e</kbd></div>
+            <div class="binding-desc">Dismiss menu</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>k</kbd></div>
+            <div class="binding-desc">Toggle signature help</div>
+          </div>
+          <div class="sub-heading">Snippets</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></div>
+            <div class="binding-desc">Jump next / prev placeholder</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 14. Useful Commands ───────────────────────── -->
+      <div class="card span2" data-accent="yellow">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="80 96 120 128 80 160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="160" x2="176" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><rect x="32" y="48" width="192" height="160" rx="8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Useful Commands &amp; Tricks</h2>
+        </div>
+        <div class="card-body two-col">
+          <div>
+            <div class="sub-heading">Plugin Management</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:Lazy</kbd></div>
+              <div class="binding-desc">Open plugin manager UI</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:Mason</kbd></div>
+              <div class="binding-desc">Manage LSP servers / tools</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:checkhealth</kbd></div>
+              <div class="binding-desc">Diagnose Neovim issues</div>
+            </div>
+            <div class="sub-heading">Handy Editing</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>g~iw</kbd></div>
+              <div class="binding-desc">Toggle case of word</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>gUiw</kbd> / <kbd>guiw</kbd></div>
+              <div class="binding-desc">Uppercase / lowercase word</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>a</kbd> / <kbd>x</kbd></div>
+              <div class="binding-desc">Increment / decrement number</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>ga</kbd></div>
+              <div class="binding-desc">Show char code under cursor</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:sort</kbd></div>
+              <div class="binding-desc">Sort selected lines</div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-heading">Marks</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>m{a}</kbd></div>
+              <div class="binding-desc">Set mark a at cursor</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>`{a}</kbd></div>
+              <div class="binding-desc">Jump to mark a</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:marks</kbd></div>
+              <div class="binding-desc">List all marks</div>
+            </div>
+            <div class="sub-heading">Command Line Tricks</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:!</kbd></div>
+              <div class="binding-desc">Run shell command</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>:.!</kbd></div>
+              <div class="binding-desc">Replace line with cmd output</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>r</kbd> <kbd>%</kbd></div>
+              <div class="binding-desc">Paste current filename <em>(cmd mode)</em></div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>@:</kbd></div>
+              <div class="binding-desc">Repeat last command</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Space</kbd><span class="sep">+</span><kbd>vs</kbd></div>
+              <div class="binding-desc">Select Python venv</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 15. Indenting ─────────────────────────────── -->
+      <div class="card span3" data-accent="peach">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="112" y1="128" x2="216" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="112" y1="64" x2="216" y2="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="40" y1="192" x2="216" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="40 56 80 96 40 136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Indenting Blocks</h2>
+        </div>
+        <div class="card-body two-col">
+          <div>
+            <div class="sub-heading">Manual Indent / Dedent</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>&gt;&gt;</kbd> / <kbd>&lt;&lt;</kbd></div>
+              <div class="binding-desc">Indent / dedent current line</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>V</kbd> select <kbd>&gt;</kbd> / <kbd>&lt;</kbd></div>
+              <div class="binding-desc">Indent / dedent visual selection</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>&gt;ip</kbd> / <kbd>&lt;ip</kbd></div>
+              <div class="binding-desc">Indent / dedent inner paragraph</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>&gt;i{</kbd> / <kbd>&lt;i{</kbd></div>
+              <div class="binding-desc">Indent / dedent inside braces</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>&gt;it</kbd> / <kbd>&lt;it</kbd></div>
+              <div class="binding-desc">Indent / dedent inside HTML tag</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>5&gt;&gt;</kbd></div>
+              <div class="binding-desc">Indent next 5 lines</div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-heading">Auto-indent (LSP / Treesitter)</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>==</kbd></div>
+              <div class="binding-desc">Auto-indent current line</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>=ip</kbd></div>
+              <div class="binding-desc">Auto-indent inner paragraph</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>=i{</kbd></div>
+              <div class="binding-desc">Auto-indent inside braces <em>(great for functions/classes)</em></div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>gg=G</kbd></div>
+              <div class="binding-desc">Auto-indent entire file</div>
+            </div>
+            <div class="sub-heading">Tip</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>&gt;</kbd> <kbd>&lt;</kbd> <kbd>=</kbd></div>
+              <div class="binding-desc">Work with <em>any</em> text object — same grammar as d, c, y</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <footer>
+      <strong>Space</strong> = Leader key
+      <span class="dot">·</span>
+      <strong>K</strong> = hover docs
+      <span class="dot">·</span>
+      <strong>which-key</strong>: press <strong>Space</strong> and wait to discover bindings
+      <span class="dot">·</span>
+      Neovim · kickstart.nvim · openSUSE Tumbleweed
+    </footer>
+  </body>
+</html>

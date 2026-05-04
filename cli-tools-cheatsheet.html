@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLI Tools Cheatsheet</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+      :root {
+        --base: #1e1e2e;
+        --mantle: #181825;
+        --crust: #11111b;
+        --surface0: #313244;
+        --surface1: #45475a;
+        --surface2: #585b70;
+        --overlay0: #6c7086;
+        --text: #cdd6f4;
+        --subtext0: #a6adc8;
+        --lavender: #b4befe;
+        --blue: #89b4fa;
+        --sapphire: #74c7ec;
+        --sky: #89dceb;
+        --teal: #94e2d5;
+        --green: #a6e3a1;
+        --yellow: #f9e2af;
+        --peach: #fab387;
+        --maroon: #eba0ac;
+        --red: #f38ba8;
+        --mauve: #cba6f7;
+        --pink: #f5c2e7;
+        --flamingo: #f2cdcd;
+        --rosewater: #f5e0dc;
+      }
+
+      html {
+        font-size: 16px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--crust);
+        color: var(--text);
+        font-family: "JetBrains Mono", "Cascadia Code", "Fira Code", monospace;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        padding: 1.5rem 1.25rem 2.5rem;
+        min-height: 100vh;
+        background-image: radial-gradient(
+          ellipse 80% 40% at 50% -10%,
+          rgba(137, 180, 250, 0.06) 0%,
+          transparent 70%
+        );
+      }
+
+      /* ── Header ─────────────────────────────────────────── */
+      header {
+        text-align: center;
+        margin-bottom: 1.75rem;
+      }
+
+      header h1 {
+        font-size: 1.625rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--text);
+        text-transform: uppercase;
+      }
+
+      header h1 span {
+        color: var(--blue);
+      }
+
+      header p {
+        color: var(--overlay0);
+        font-size: 0.8125rem;
+        letter-spacing: 0.06em;
+        margin-top: 0.25rem;
+        text-transform: uppercase;
+      }
+
+      .header-rule {
+        width: 3.75rem;
+        height: 1px;
+        background: var(--blue);
+        margin: 0.625rem auto 0;
+        opacity: 0.5;
+      }
+
+      /* ── Grid ────────────────────────────────────────────── */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.875rem;
+        max-width: 81.25rem;
+        margin: 0 auto;
+      }
+
+      /* ── Cards ───────────────────────────────────────────── */
+      .card {
+        background: var(--base);
+        border-radius: 0.5rem;
+        border: 1px solid var(--surface0);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 0.875rem;
+        border-bottom: 1px solid var(--surface0);
+        background: color-mix(in srgb, currentColor 10%, transparent);
+      }
+
+      .card-header svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        flex-shrink: 0;
+        opacity: 0.9;
+      }
+
+      .card-header h2 {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .card[data-accent="blue"] .card-header { color: var(--blue); }
+      .card[data-accent="sapphire"] .card-header { color: var(--sapphire); }
+      .card[data-accent="green"] .card-header { color: var(--green); }
+      .card[data-accent="yellow"] .card-header { color: var(--yellow); }
+      .card[data-accent="peach"] .card-header { color: var(--peach); }
+      .card[data-accent="red"] .card-header { color: var(--red); }
+      .card[data-accent="teal"] .card-header { color: var(--teal); }
+      .card[data-accent="mauve"] .card-header { color: var(--mauve); }
+      .card[data-accent="sky"] .card-header { color: var(--sky); }
+
+      .card-body {
+        padding: 0.5rem 0.875rem 0.75rem;
+        flex: 1;
+      }
+
+      /* ── Binding rows ────────────────────────────────────── */
+      .binding {
+        display: flex;
+        align-items: baseline;
+        gap: 0.625rem;
+        padding: 0.25rem 0;
+        border-bottom: 1px solid var(--surface0);
+      }
+
+      .binding:last-child {
+        border-bottom: none;
+      }
+
+      .binding-keys {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.1875rem;
+        flex-shrink: 0;
+        min-width: 14rem;
+        max-width: 14rem;
+        align-items: center;
+      }
+
+      .binding-desc {
+        color: var(--subtext0);
+        font-size: 0.875rem;
+        flex: 1;
+        line-height: 1.4;
+      }
+
+      /* ── kbd ─────────────────────────────────────────────── */
+      kbd {
+        display: inline-block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.125rem 0.4375rem;
+        border-radius: 0.25rem;
+        background: var(--surface0);
+        border: 1px solid var(--surface1);
+        line-height: 1.6;
+        white-space: nowrap;
+        letter-spacing: 0.01em;
+      }
+
+      .card[data-accent="blue"] kbd {
+        color: var(--blue);
+        border-color: color-mix(in srgb, var(--blue) 30%, var(--surface1));
+      }
+      .card[data-accent="sapphire"] kbd {
+        color: var(--sapphire);
+        border-color: color-mix(in srgb, var(--sapphire) 30%, var(--surface1));
+      }
+      .card[data-accent="green"] kbd {
+        color: var(--green);
+        border-color: color-mix(in srgb, var(--green) 30%, var(--surface1));
+      }
+      .card[data-accent="yellow"] kbd {
+        color: var(--yellow);
+        border-color: color-mix(in srgb, var(--yellow) 30%, var(--surface1));
+      }
+      .card[data-accent="peach"] kbd {
+        color: var(--peach);
+        border-color: color-mix(in srgb, var(--peach) 30%, var(--surface1));
+      }
+      .card[data-accent="red"] kbd {
+        color: var(--red);
+        border-color: color-mix(in srgb, var(--red) 30%, var(--surface1));
+      }
+      .card[data-accent="teal"] kbd {
+        color: var(--teal);
+        border-color: color-mix(in srgb, var(--teal) 30%, var(--surface1));
+      }
+      .card[data-accent="mauve"] kbd {
+        color: var(--mauve);
+        border-color: color-mix(in srgb, var(--mauve) 30%, var(--surface1));
+      }
+      .card[data-accent="sky"] kbd {
+        color: var(--sky);
+        border-color: color-mix(in srgb, var(--sky) 30%, var(--surface1));
+      }
+
+      .sep {
+        color: var(--overlay0);
+        font-size: 0.6875rem;
+        padding: 0 0.0625rem;
+        user-select: none;
+      }
+
+      /* ── Sub-headings ────────────────────────────────────── */
+      .sub-heading {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--overlay0);
+        padding: 0.5rem 0 0.25rem;
+        border-bottom: 1px solid var(--surface0);
+        margin-bottom: 0.0625rem;
+      }
+
+      .sub-heading:first-child {
+        padding-top: 0.125rem;
+      }
+
+      /* ── Alias badge ─────────────────────────────────────── */
+      .alias-badge {
+        font-size: 0.6875rem;
+        color: var(--overlay0);
+        background: var(--mantle);
+        border: 1px solid var(--surface0);
+        border-radius: 0.25rem;
+        padding: 0.0625rem 0.3125rem;
+        margin-left: 0.25rem;
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+
+      /* ── Footer ──────────────────────────────────────────── */
+      footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--overlay0);
+        font-size: 0.8125rem;
+        letter-spacing: 0.06em;
+      }
+
+      footer strong {
+        color: var(--subtext0);
+        font-weight: 500;
+      }
+
+      footer .dot {
+        margin: 0 0.5rem;
+        color: var(--surface2);
+      }
+
+      /* ── Print ───────────────────────────────────────────── */
+      @media print {
+        body {
+          background: #fff;
+          color: #111;
+          background-image: none;
+          padding: 0.75rem;
+          font-size: 0.8125rem;
+        }
+
+        .grid {
+          gap: 0.625rem;
+        }
+
+        .card {
+          background: #fff;
+          border: 1px solid #ccc;
+          break-inside: avoid;
+        }
+
+        .card-header {
+          background: #f0f0f0;
+          border-bottom-color: #ddd;
+        }
+        .binding {
+          border-bottom-color: #eee;
+        }
+        .sub-heading {
+          color: #666;
+          border-bottom-color: #eee;
+        }
+
+        kbd {
+          background: #f5f5f5;
+          border-color: #bbb;
+          color: #333 !important;
+        }
+
+        .card-header,
+        .card[data-accent] .card-header {
+          color: #111;
+        }
+
+        .binding-desc {
+          color: #333;
+        }
+
+        .alias-badge {
+          background: #eee;
+          color: #666;
+          border-color: #ccc;
+        }
+
+        footer {
+          color: #666;
+        }
+        header p {
+          color: #666;
+        }
+
+        .header-rule {
+          background: #999;
+        }
+      }
+
+      /* ── FZF internal grid ───────────────────────────────── */
+      /* In 3-col layout the fzf card is too narrow for 2 inner cols;
+         flip to 2-col only when the outer grid is 2-col (card is wider) */
+      .fzf-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0 1.5rem;
+      }
+
+      /* ── Responsive ──────────────────────────────────────── */
+      @media (max-width: 68.75rem) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        /* fzf card is now half the viewport — wide enough for 2 inner cols */
+        .fzf-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 42.5rem) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .binding-keys {
+          min-width: 11rem;
+          max-width: 11rem;
+        }
+        .fzf-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>CLI <span>Tools</span> Cheatsheet</h1>
+      <p>zoxide · eza · fd · fzf · ripgrep · OpenSUSE Tumbleweed</p>
+      <div class="header-rule"></div>
+    </header>
+
+    <div class="grid">
+
+      <!-- ── 1. zoxide ──────────────────────────────────────── -->
+      <div class="card" data-accent="blue">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polygon points="160 16 144 96 208 120 96 240 112 160 48 136 160 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>zoxide <span style="font-weight:400;opacity:.5;font-size:.7em">z</span></h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>z foo</kbd></div>
+            <div class="binding-desc">Jump to best match for "foo"</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>z foo bar</kbd></div>
+            <div class="binding-desc">Match directory containing both terms</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>z foo/</kbd></div>
+            <div class="binding-desc">Jump to relative subdirectory</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>z ..</kbd></div>
+            <div class="binding-desc">Go up one level</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>z -</kbd></div>
+            <div class="binding-desc">Jump to previous directory</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zi foo</kbd></div>
+            <div class="binding-desc">Interactive pick with fzf</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>z foo<span class="sep"> </span><kbd style="opacity:.7">Tab</kbd></kbd></div>
+            <div class="binding-desc">Show completions interactively</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>zoxide query -l</kbd></div>
+            <div class="binding-desc">List all tracked directories</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2. eza ─────────────────────────────────────────── -->
+      <div class="card" data-accent="green">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="88" y1="64" x2="216" y2="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="128" x2="216" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="192" x2="216" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="44" cy="64" r="12" fill="currentColor"/><circle cx="44" cy="128" r="12" fill="currentColor"/><circle cx="44" cy="192" r="12" fill="currentColor"/></svg>
+          <h2>eza <span style="font-weight:400;opacity:.5;font-size:.7em">ls</span></h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>ls</kbd></div>
+            <div class="binding-desc">List with icons <span class="alias-badge">eza --icons</span></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ll</kbd></div>
+            <div class="binding-desc">Long list, all metadata <span class="alias-badge">eza -la --icons --git</span></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>la</kbd></div>
+            <div class="binding-desc">Long list + hidden files <span class="alias-badge">eza -lah --icons --git</span></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>eza -T</kbd></div>
+            <div class="binding-desc">Tree view (full depth)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>eza -T -L 2</kbd></div>
+            <div class="binding-desc">Tree view, 2 levels deep</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>eza --git</kbd></div>
+            <div class="binding-desc">Show git status per file</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>eza --sort=size</kbd></div>
+            <div class="binding-desc">Sort by file size</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>eza --sort=modified</kbd></div>
+            <div class="binding-desc">Sort by modified date</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3. fd ───────────────────────────────────────────── -->
+      <div class="card" data-accent="sapphire">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>fd <span style="font-weight:400;opacity:.5;font-size:.7em">find</span></h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd pattern</kbd></div>
+            <div class="binding-desc">Find files by name (fuzzy, case-smart)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -e py</kbd></div>
+            <div class="binding-desc">Find by extension (.py files)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -t d pattern</kbd></div>
+            <div class="binding-desc">Find directories only</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -t l pattern</kbd></div>
+            <div class="binding-desc">Find symlinks only</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -H pattern</kbd></div>
+            <div class="binding-desc">Include hidden files/dirs</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -I pattern</kbd></div>
+            <div class="binding-desc">Ignore .gitignore rules</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd --changed-within 1d</kbd></div>
+            <div class="binding-desc">Files modified in last day</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -e jpg -x cmd {}</kbd></div>
+            <div class="binding-desc">Execute cmd per result <span class="alias-badge">parallel</span></div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -e jpg -X cmd</kbd></div>
+            <div class="binding-desc">Execute cmd with all results at once</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 4. fzf ──────────────────────────────────────────── -->
+      <div class="card" data-accent="mauve">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M34.1,61.38A8,8,0,0,1,40,48H216a8,8,0,0,1,5.92,13.38L152,136v58.65a8,8,0,0,1-3.56,6.66l-32,21.33A8,8,0,0,1,104,216V136Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>fzf</h2>
+        </div>
+        <div class="card-body fzf-grid">
+          <div>
+            <div class="sub-heading">Shell Key Bindings</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Ctrl+T</kbd></div>
+              <div class="binding-desc">Insert file/dir path onto line</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Ctrl+R</kbd></div>
+              <div class="binding-desc">Fuzzy search command history</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Alt+C</kbd></div>
+              <div class="binding-desc">cd into selected directory</div>
+            </div>
+
+            <div class="sub-heading">Fuzzy Completion</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>vim **<span class="sep"></span><kbd style="opacity:.7">Tab</kbd></kbd></div>
+              <div class="binding-desc">Fuzzy-complete file path</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>cd **<span class="sep"></span><kbd style="opacity:.7">Tab</kbd></kbd></div>
+              <div class="binding-desc">Fuzzy-complete directory</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>kill **<span class="sep"></span><kbd style="opacity:.7">Tab</kbd></kbd></div>
+              <div class="binding-desc">Fuzzy-complete process PID</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>ssh **<span class="sep"></span><kbd style="opacity:.7">Tab</kbd></kbd></div>
+              <div class="binding-desc">Fuzzy-complete hostname</div>
+            </div>
+
+            <div class="sub-heading">Usage</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>cmd | fzf</kbd></div>
+              <div class="binding-desc">Pipe any list into fzf</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>vim $(fzf)</kbd></div>
+              <div class="binding-desc">Select file then open in vim</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="sub-heading">Search Syntax (inside fzf)</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>term</kbd></div>
+              <div class="binding-desc">Fuzzy match</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>'exact</kbd></div>
+              <div class="binding-desc">Exact match (substring)</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>^prefix</kbd></div>
+              <div class="binding-desc">Match at start of string</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>suffix$</kbd></div>
+              <div class="binding-desc">Match at end of string</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>!term</kbd></div>
+              <div class="binding-desc">Exclude — inverse match</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>a | b</kbd></div>
+              <div class="binding-desc">OR — match either term</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>a b</kbd></div>
+              <div class="binding-desc">AND — match both terms</div>
+            </div>
+            <div class="sub-heading">Inside fzf UI</div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></div>
+              <div class="binding-desc">Mark / unmark (multi-select)</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Ctrl+C</kbd> / <kbd>Esc</kbd></div>
+              <div class="binding-desc">Cancel / exit</div>
+            </div>
+            <div class="binding">
+              <div class="binding-keys"><kbd>Enter</kbd></div>
+              <div class="binding-desc">Confirm selection</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5. ripgrep ─────────────────────────────────────── -->
+      <div class="card" data-accent="peach">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="40" y1="64" x2="216" y2="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="40" y1="128" x2="112" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="40" y1="192" x2="128" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="184" cy="144" r="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="206.63" y1="166.63" x2="232" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>ripgrep <span style="font-weight:400;opacity:.5;font-size:.7em">rg</span></h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg pattern</kbd></div>
+            <div class="binding-desc">Search in all files (respects .gitignore)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -i pattern</kbd></div>
+            <div class="binding-desc">Case-insensitive search</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -w pattern</kbd></div>
+            <div class="binding-desc">Whole word match only</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -t py pattern</kbd></div>
+            <div class="binding-desc">Search in Python files only</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -l pattern</kbd></div>
+            <div class="binding-desc">List matching filenames only</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -c pattern</kbd></div>
+            <div class="binding-desc">Count matches per file</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -C 3 pattern</kbd></div>
+            <div class="binding-desc">Show 3 lines of context around match</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -u pattern</kbd></div>
+            <div class="binding-desc">Include gitignored files</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg --hidden pattern</kbd></div>
+            <div class="binding-desc">Include hidden files/dirs</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -e p1 -e p2</kbd></div>
+            <div class="binding-desc">Multiple patterns (OR)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6. Power Combos ────────────────────────────────── -->
+      <div class="card" data-accent="teal">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="96" y1="160" x2="160" y2="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M112,76.11l30.06-30a48,48,0,0,1,67.88,67.88L179.88,144" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M76.11,112l-30,30.06a48,48,0,0,0,67.88,67.88L144,179.88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Power Combos</h2>
+        </div>
+        <div class="card-body">
+          <div class="binding">
+            <div class="binding-keys"><kbd>zi</kbd></div>
+            <div class="binding-desc">zoxide + fzf: pick recent dir interactively</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -e md | fzf</kbd></div>
+            <div class="binding-desc">Find Markdown files, pick one with fzf</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rg -l pat | fzf</kbd></div>
+            <div class="binding-desc">Find files with match, pick one interactively</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>rgf pattern</kbd></div>
+            <div class="binding-desc">rg results in fzf with bat preview pane</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>vim $(fd -e py | fzf)</kbd></div>
+            <div class="binding-desc">Find Python file → pick → open in vim</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>eza -T | rg pattern</kbd></div>
+            <div class="binding-desc">Search within tree output</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -x rg pat {}</kbd></div>
+            <div class="binding-desc">Find files then search within each</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>ll | rg pattern</kbd></div>
+            <div class="binding-desc">Filter long listing by pattern</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>fd -e log -x bat</kbd></div>
+            <div class="binding-desc">Find all .log files and view with bat</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- /grid -->
+
+    <footer>
+      <strong>fd</strong> and <strong>rg</strong> ignore hidden files &amp; .gitignore by default
+      <span class="dot">·</span>
+      <strong>z</strong> / <strong>find</strong> / <strong>grep</strong> are aliased to zoxide / fd / ripgrep
+      <span class="dot">·</span>
+      OpenSUSE Tumbleweed
+    </footer>
+  </body>
+</html>

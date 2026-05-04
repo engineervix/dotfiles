@@ -1,0 +1,98 @@
+{
+    // Workspaces
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch workspace r-1",
+        "on-scroll-down": "hyprctl dispatch workspace r+1",
+        "on-click": "activate",
+        "active-only": false,
+        "all-outputs": true,
+        "format": "{}",
+        "persistent-workspaces": {}
+    },
+    // Hyprland Window
+    "hyprland/window": {
+        "max-length": 50,
+        "separate-outputs": true
+    },
+    // App Menu
+    "custom/appmenu": {
+        "format": "",
+        "on-click": "rofi -show drun",
+        "tooltip-format": "Open App Launcher"
+    },
+    // Network
+    "network": {
+        // Inline speeds — swap with tooltip-only formats below to hide from bar
+        // "format": "  ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+        // "format-wifi": "  ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+        // "format-ethernet": "  ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+        // Tooltip-only alternative (comment out inline formats above and uncomment these):
+         "format": " ",
+         "format-wifi": " ",
+         "format-ethernet": " ",
+        "format-disconnected": "Disconnected",
+        "tooltip-format": " {ifname} via {gwaddr} | ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+        "tooltip-format-wifi": " {essid} ({signalStrength}%) | ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+        "tooltip-format-ethernet": " {ifname} | ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+        "tooltip-format-disconnected": "Disconnected",
+        "interval": 2,
+        "on-click": "nm-connection-editor"
+    },
+    // Pulseaudio
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    // Battery
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    // CPU
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": false
+    },
+    // Memory
+    "memory": {
+        "format": " {}%"
+    },
+    // Tray
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    },
+    // Weather
+    "custom/weather": {
+        "format": "{}",
+        "tooltip": true,
+        "interval": 3600,
+        "exec": "~/.config/waybar/scripts/weather.sh",
+        "return-type": "json"
+    },
+    // Clock
+    "clock": {
+        "interval": 1,
+        "format": "{:%H:%M:%S | %a, %d %b}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>"
+    }
+}

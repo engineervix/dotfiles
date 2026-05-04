@@ -1,0 +1,4 @@
+[binds]
+
+# Copy current image to clipboard
+<Ctrl+c> = exec wl-copy --type "$(file --mime-type -b "$imv_current_file")" < "$imv_current_file" && notify-send "Image Copied to Clipboard"

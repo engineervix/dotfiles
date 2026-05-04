@@ -1,0 +1,10 @@
+# Lefthook configuration for secrets detection
+# Uses ggshield (GitGuardian) to scan for secrets before commit
+
+pre-commit:
+  parallel: false
+  commands:
+    ggshield:
+      tags: secret
+      files: git diff --name-only --staged
+      run: ggshield secret scan pre-commit {staged_files}

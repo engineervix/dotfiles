@@ -1,0 +1,10 @@
+# Local configurations (containing secrets)
+.zshrc.local
+.zshrc.local.backup.*
+
+# Backups created by install.sh
+*.backup.*
+
+# Temporary files
+*~
+*.swp

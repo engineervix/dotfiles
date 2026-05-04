@@ -1,0 +1,38 @@
+{
+    // General Settings
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "margin-top": 5,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 4,
+
+    // Load Modules
+    "include": [
+        "~/.config/waybar/modules.json"
+    ],
+
+    // Modules Left
+    "modules-left": [
+        "custom/appmenu",
+        "hyprland/workspaces"
+    ],
+
+    // Modules Center
+    "modules-center": [
+        "hyprland/window"
+    ],
+
+    // Modules Right
+    "modules-right": [
+        "clock",
+        "network",
+        "pulseaudio",
+        "battery",
+        "cpu",
+        "memory",
+        "custom/weather",
+        "tray"
+    ]
+}

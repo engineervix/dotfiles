@@ -1,0 +1,138 @@
+/* Catppuccin Mocha — self-contained */
+* {
+    bg:         #1e1e2e;
+    bg-alt:     #313244;
+    bg-select:  #45475a;
+    fg:         #cdd6f4;
+    fg-dim:     #a6adc8;
+    accent:     #cba6f7;
+
+    /* reset rofi defaults */
+    background-color:  transparent;
+    text-color:        @fg;
+    border:            0;
+    margin:            0;
+    padding:           0;
+    spacing:           0;
+    separatorcolor:    transparent;
+}
+
+configuration {
+    modi:                "drun,window,run";
+    font:                "JetBrainsMono Nerd Font 11";
+    show-icons:          true;
+    icon-theme:          "Papirus-Dark";
+    display-drun:        " Apps";
+    display-window:      " Windows";
+    display-run:         " Run";
+    drun-display-format: "{name}";
+    hover-select:        false;
+    me-select-entry:     "";
+    me-accept-entry:     "MousePrimary";
+    window-format:       "{w} · {c} · {t}";
+}
+
+window {
+    width:            30em;
+    location:         north;
+    anchor:           north;
+    y-offset:         2em;
+    border:           2px;
+    border-color:     @accent;
+    border-radius:    10px;
+    background-color: @bg;
+}
+
+mainbox {
+    children: [ "inputbar", "listview", "message" ];
+    background-color: @bg;
+}
+
+inputbar {
+    padding:          0.8em 1em;
+    spacing:          0.5em;
+    background-color: @bg-alt;
+    border-radius:    8px 8px 0 0;
+    children:         [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    expand:           false;
+    str:              " ";
+    padding:          0.4em 0 0 0;
+    text-color:       @accent;
+}
+
+entry {
+    padding:           0.4em 0;
+    text-color:        @fg;
+    placeholder:       "Search...";
+    placeholder-color: @fg-dim;
+    cursor:            text;
+}
+
+listview {
+    padding:    0.5em;
+    lines:      8;
+    columns:    1;
+    cycle:      true;
+    dynamic:    true;
+    scrollbar:  false;
+    background-color: @bg;
+}
+
+element {
+    padding:      0.6em 0.8em;
+    spacing:      0.6em;
+    cursor:       pointer;
+    border-radius: 8px;
+    background-color: @bg;
+    text-color:   @fg;
+}
+
+element normal.normal {
+    background-color: @bg;
+    text-color:       @fg;
+}
+
+element alternate.normal {
+    background-color: @bg;
+    text-color:       @fg;
+}
+
+element selected.normal {
+    background-color: @bg-select;
+    text-color:       @fg;
+}
+
+element normal.urgent,
+element alternate.urgent,
+element selected.urgent {
+    background-color: @bg-select;
+    text-color:       @fg;
+}
+
+element normal.active,
+element alternate.active,
+element selected.active {
+    background-color: @bg-alt;
+    text-color:       @accent;
+}
+
+element-icon {
+    size:   1.5em;
+    cursor: inherit;
+}
+
+element-text {
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    text-color:       inherit;
+    cursor:           inherit;
+}
+
+message {
+    padding:    0.5em 1em;
+    text-color: @fg-dim;
+    background-color: @bg;
+}

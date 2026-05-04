@@ -1,0 +1,100 @@
+@import "colors.css";
+
+* {
+    font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background-color: @background;
+    color: @text;
+    transition-property: background-color;
+    transition-duration: .5s;
+    border-radius: 12px;
+}
+
+/* Modules General */
+.modules-left, .modules-center, .modules-right {
+    background-color: transparent;
+    margin: 4px;
+}
+
+/* Individual Module Styling */
+#workspaces,
+#window,
+#network,
+#pulseaudio,
+#battery,
+#cpu,
+#memory,
+#clock,
+#tray,
+#custom-appmenu {
+    background-color: @surface;
+    padding: 0px 10px;
+    margin: 0px 2px;
+    border-radius: 8px;
+    border: 1px solid @border_color;
+}
+
+#network {
+    padding: 0px 14px;
+}
+
+/* Custom App Menu */
+#custom-appmenu {
+    font-size: 18px;
+    color: @primary;
+    padding: 0px 12px;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: @text;
+    border-radius: 4px;
+}
+
+#workspaces button.active {
+    background-color: @primary;
+    color: @on_primary;
+    font-weight: bold;
+}
+
+#workspaces button:hover {
+    background-color: @secondary;
+    color: @on_primary;
+}
+
+/* Clock */
+#clock {
+    font-size: 15px;
+    font-weight: bold;
+    color: @primary;
+    padding: 0px 14px;
+}
+
+/* Specific module tweaks */
+#battery.critical:not(.charging) {
+    background-color: @error;
+    color: @on_surface;
+}
+
+#pulseaudio.muted {
+    background-color: @surface;
+    color: @error;
+}
+
+/* Tooltips */
+tooltip {
+    background: @surface;
+    border: 1px solid @border_color;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: @text;
+}
