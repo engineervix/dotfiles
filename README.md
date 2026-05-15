@@ -51,6 +51,8 @@ scripts/
 │   ├── style.css               # Status bar styling
 │   └── scripts/
 │       └── weather.sh          # Weather widget (wttr.in)
+├── zathura/
+│   └── zathurarc               # PDF viewer (selection-clipboard = clipboard)
 ├── wireplumber/
 │   └── wireplumber.conf.d/     # Bluetooth audio policy
 ├── chrome-flags.conf           # Chrome/Chromium startup flags

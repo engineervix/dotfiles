@@ -80,6 +80,7 @@ link "${DOTFILES_DIR}/.config/Thunar"       "$HOME/.config/Thunar"
 link "${DOTFILES_DIR}/.config/chrome-flags.conf" "$HOME/.config/chrome-flags.conf"
 link "${DOTFILES_DIR}/.config/wireplumber/wireplumber.conf.d" "$HOME/.config/wireplumber/wireplumber.conf.d"
 link "${DOTFILES_DIR}/.config/waybar"       "$HOME/.config/waybar"
+link "${DOTFILES_DIR}/.config/zathura"     "$HOME/.config/zathura"
 
 mkdir -p "$HOME/.gnupg"
 link "${DOTFILES_DIR}/.gnupg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
