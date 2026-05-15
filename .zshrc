@@ -252,7 +252,7 @@ function add_nodemodules_bin() {
 autoload -U add-zsh-hook
 add-zsh-hook chpwd add_nodemodules_bin
 
-# =============== FZF, Zoxide, Starship ===============
+# =============== FZF ===============
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Use fd as the default source for fzf (respects .gitignore, includes hidden)
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -261,7 +261,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 # Nicer fzf UI defaults
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
-eval "$(zoxide init zsh)"
+
+# =============== Starship ===============
 eval "$(starship init zsh)"
 
 # ============ syntax highlighting & autosuggestions =============
@@ -272,3 +273,7 @@ eval "$(starship init zsh)"
 # Keep secrets and machine-specific config in .zshrc.local
 # This file should NOT be tracked by git.
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+
+# =============== Zoxide ===============
+eval "$(zoxide init zsh)"
+
