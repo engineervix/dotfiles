@@ -144,6 +144,7 @@
       .card[data-accent="lavender"].card-header { color: var(--lavender); }
       .card[data-accent="pink"]    .card-header { color: var(--pink); }
       .card[data-accent="sky"]     .card-header { color: var(--sky); }
+      .card[data-accent="maroon"]  .card-header { color: var(--maroon); }
 
       .card-body {
         padding: 0.5rem 0.875rem 0.75rem;
@@ -210,6 +211,7 @@
       .card[data-accent="lavender"]kbd { color: var(--lavender);border-color: color-mix(in srgb, var(--lavender)30%, var(--surface1)); }
       .card[data-accent="pink"]    kbd { color: var(--pink);    border-color: color-mix(in srgb, var(--pink)    30%, var(--surface1)); }
       .card[data-accent="sky"]     kbd { color: var(--sky);     border-color: color-mix(in srgb, var(--sky)     30%, var(--surface1)); }
+      .card[data-accent="maroon"]  kbd { color: var(--maroon);  border-color: color-mix(in srgb, var(--maroon)  30%, var(--surface1)); }
 
       .sep {
         color: var(--overlay0);
@@ -1009,6 +1011,92 @@
           <div class="binding">
             <div class="binding-keys"><kbd>Ctrl</kbd><span class="sep">+</span><kbd>h/j/k/l</kbd></div>
             <div class="binding-desc">Navigate to other windows <em>(splits only)</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 15. Neo-tree ────────────────────────────────── -->
+      <div class="card" data-accent="maroon">
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><rect x="16" y="104" width="48" height="48" rx="8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><rect x="152" y="40" width="64" height="64" rx="8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><rect x="152" y="152" width="64" height="64" rx="8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="64" y1="128" x2="112" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M152,184H128a16,16,0,0,1-16-16V88a16,16,0,0,1,16-16h24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <h2>Neo-tree</h2>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">Toggle</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>\</kbd></div>
+            <div class="binding-desc">Reveal / close explorer</div>
+          </div>
+          <div class="sub-heading">Navigate</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>j</kbd> / <kbd>k</kbd></div>
+            <div class="binding-desc">Down / up</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Enter</kbd></div>
+            <div class="binding-desc">Open file / expand dir</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>Space</kbd></div>
+            <div class="binding-desc">Expand / collapse node</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>BS</kbd></div>
+            <div class="binding-desc">Go up to parent dir</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>.</kbd></div>
+            <div class="binding-desc">Set dir as root</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>H</kbd></div>
+            <div class="binding-desc">Toggle hidden files</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>/</kbd></div>
+            <div class="binding-desc">Fuzzy find in tree</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>P</kbd></div>
+            <div class="binding-desc">Preview file (float)</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>[g</kbd> / <kbd>]g</kbd></div>
+            <div class="binding-desc">Prev / next git change</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>&lt;</kbd> / <kbd>&gt;</kbd></div>
+            <div class="binding-desc">Switch source <em>(files / git / buffers)</em></div>
+          </div>
+          <div class="sub-heading">Open in…</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>S</kbd> / <kbd>s</kbd></div>
+            <div class="binding-desc">Horizontal / vertical split</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>t</kbd></div>
+            <div class="binding-desc">Open in new tab</div>
+          </div>
+          <div class="sub-heading">File ops</div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>a</kbd> / <kbd>A</kbd></div>
+            <div class="binding-desc">New file / new directory</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>r</kbd></div>
+            <div class="binding-desc">Rename</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>d</kbd></div>
+            <div class="binding-desc">Delete</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>y</kbd> / <kbd>x</kbd> / <kbd>p</kbd></div>
+            <div class="binding-desc">Copy / cut / paste</div>
+          </div>
+          <div class="binding">
+            <div class="binding-keys"><kbd>?</kbd></div>
+            <div class="binding-desc">Show all keymaps</div>
           </div>
         </div>
       </div>
