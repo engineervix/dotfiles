@@ -14,6 +14,8 @@ configure_monitors() {
         hyprctl keyword layout:single_window_aspect_ratio "1 1"
     else
         hyprctl keyword monitor "$INTERNAL,$INTERNAL_MODE"
+        # Reset external to auto so it won't overlap eDP-1 on next reconnect
+        hyprctl keyword monitor "$EXTERNAL,preferred,auto,1.5"
         hyprctl keyword layout:single_window_aspect_ratio "0 0"
     fi
 }
