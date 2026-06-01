@@ -16,11 +16,25 @@ configure_monitors() {
         hyprctl keyword monitor "$INTERNAL,disable"
         hyprctl keyword layout:single_window_aspect_ratio "1 1"
     else
-        # External gone: re-enable eDP-1 at origin, reset external rule,
-        # disable aspect ratio constraint.
-        hyprctl keyword monitor "$INTERNAL,$INTERNAL_MODE"
+        # External gone: re-enable eDP-1. CRITICAL: Hyprland 0.55 cannot undo a
+        # `monitor=eDP-1,disable` via `keyword monitor eDP-1,<mode>` at runtime —
+        # that call is a silent no-op, so eDP-1 stays dark. Only a config reload
+        # (which re-reads monitors.conf, where eDP-1 has no disable) re-enables a
+        # disabled output. Guard the reload with `hyprctl monitors` (active
+        # outputs only): if eDP-1 is already active we skip it, so the
+        # monitoradded event the reload itself fires doesn't reload again.
+        if ! hyprctl monitors -j | grep -q "\"name\": \"$INTERNAL\""; then
+            hyprctl reload
+            sleep 0.5
+        fi
         hyprctl keyword layout:single_window_aspect_ratio "0 0"
-        hyprctl keyword monitor "$EXTERNAL,preferred,auto,1.5"
+        hyprctl dispatch dpms on "$INTERNAL"
+        # Pull every workspace (incl. any stranded on the FALLBACK headless
+        # output created during the zero-monitor gap) back onto eDP-1, focus it.
+        hyprctl workspaces -j | jq -r '.[].id' | while read -r ws; do
+            hyprctl dispatch moveworkspacetomonitor "$ws" "$INTERNAL"
+        done
+        hyprctl dispatch focusmonitor "$INTERNAL"
     fi
 }
 
