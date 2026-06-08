@@ -100,6 +100,7 @@ alias cd='z'
 alias ts='date +"%Y-%m-%d-%H-%M-%S"'
 alias trash='gio trash'
 alias pipup='pip install --upgrade pip'
+alias chromium='chromium --user-data-dir="$(mktemp -d)"'
 
 # Safety aliases
 alias rm='rm -i'
