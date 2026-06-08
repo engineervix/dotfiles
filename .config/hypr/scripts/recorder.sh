@@ -14,9 +14,9 @@ notify() {
     notify-send -a "Screen Recorder" -i "video-display-symbolic" "$1" "$2" -t "$3"
 }
 
-if pgrep -x "gpu-screen-recorder" > /dev/null; then
+if pgrep -f "^gpu-screen-recorder" > /dev/null; then
     # Stop recording gracefully with SIGINT (to finalize the video file)
-    pkill -SIGINT -x "gpu-screen-recorder"
+    pkill -SIGINT -f "^gpu-screen-recorder"
     exit 0
 else
     # Start recording using the Wayland portal
