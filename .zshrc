@@ -69,6 +69,9 @@ source /usr/bin/virtualenvwrapper-3.13
 # Added by `rbenv init` on Wed 10 Jun 19:42:02 CAT 2026
 eval "$(~/.rbenv/bin/rbenv init - --no-rehash zsh)"
 
+# =============== https://github.com/tobi/try ===============
+eval "$(try init)"
+
 # =============== Go ===============
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
