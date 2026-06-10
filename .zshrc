@@ -65,6 +65,10 @@ export WORKON_HOME="$HOME/.virtualenvs"
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.13
 source /usr/bin/virtualenvwrapper-3.13
 
+# =============== Ruby (rbenv) ===============
+# Added by `rbenv init` on Wed 10 Jun 19:42:02 CAT 2026
+eval "$(~/.rbenv/bin/rbenv init - --no-rehash zsh)"
+
 # =============== Go ===============
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
