@@ -57,6 +57,11 @@ symbol = " "
 style = "bold red"
 format = "via [$symbol($version )]($style)"
 
+[gcloud]
+symbol = "☁️ "
+style = "bold blue"
+format = '[$symbol(\($region\))]($style) '
+
 [docker_context]
 symbol = " "
 style = "bold blue"
