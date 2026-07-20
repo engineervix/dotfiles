@@ -86,4 +86,7 @@ link "${DOTFILES_DIR}/.config/yazi"        "$HOME/.config/yazi"
 mkdir -p "$HOME/.gnupg"
 link "${DOTFILES_DIR}/.gnupg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
 
+mkdir -p "$HOME/.task"
+link "${DOTFILES_DIR}/.task/hooks"          "$HOME/.task/hooks"
+
 log "Dotfiles symlinks set up successfully."
