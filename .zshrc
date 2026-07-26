@@ -1,5 +1,6 @@
 # =============== Keybindings ===============
-bindkey -e  # Use emacs key bindings
+# bindkey -e  # emacs key bindings
+bindkey -v  # vi key bindings
 # vi-style word movement for Ctrl+Arrows
 bindkey '^[[1;5C' vi-forward-word   # Ctrl+Right
 bindkey '^[[1;5D' vi-backward-word  # Ctrl+Left
