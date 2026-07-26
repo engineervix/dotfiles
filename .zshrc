@@ -93,6 +93,11 @@ for dump in ~/.zcompdump(N.mh+24); do
 done
 compinit -C
 
+# =============== Carapace ===============
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+source <(carapace _carapace)
+
 # =============== Aliases ===============
 # General
 alias open="xdg-open"
