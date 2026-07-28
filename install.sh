@@ -82,6 +82,7 @@ link "${DOTFILES_DIR}/.config/wireplumber/wireplumber.conf.d" "$HOME/.config/wir
 link "${DOTFILES_DIR}/.config/waybar"       "$HOME/.config/waybar"
 link "${DOTFILES_DIR}/.config/zathura"     "$HOME/.config/zathura"
 link "${DOTFILES_DIR}/.config/yazi"        "$HOME/.config/yazi"
+link "${DOTFILES_DIR}/.config/atuin"       "$HOME/.config/atuin"
 
 mkdir -p "$HOME/.gnupg"
 link "${DOTFILES_DIR}/.gnupg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
