@@ -89,6 +89,10 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # Required by fzf-tab: let it capture the unambiguous-prefix case instead of
 # zsh showing its own completion menu.
 zstyle ':completion:*' menu no
+# fzf-tab: colorize filenames in the completion list itself using LS_COLORS
+# (Linux/openSUSE already populates LS_COLORS via /etc/zshrc's dircolors
+# call before this file loads, unlike macOS — no eval needed here.)
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # fzf-tab: preview directory contents with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
@@ -286,7 +290,13 @@ export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :100 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --icons --level=2 {}'"
 
 # =============== Atuin ===============
-# Must load after the FZF block above — both bind Ctrl-R, atuin should win.
+# Must load after the FZF block above — both bind Ctrl-R, and atuin should win
+# in the keymaps it actually overrides. It rebinds ^R in the emacs and viins
+# keymaps (i.e. normal insert-mode typing), so that's what you get almost
+# always. It does NOT rebind vicmd's ^R — in vi *normal* mode (after Esc) it
+# binds `/` instead, vim-style, so vicmd's ^R still falls through to fzf's
+# older fzf-history-widget from the FZF block above. Intentional on atuin's
+# part, just easy to forget which mode you're in.
 command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
 # =============== FZF-tab ===============
