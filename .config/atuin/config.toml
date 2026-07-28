@@ -1,0 +1,3 @@
+# Match the shell's vi keybindings (.zshrc uses `bindkey -v`) instead of
+# defaulting the search popup to emacs-style keys.
+keymap_mode = "auto"
