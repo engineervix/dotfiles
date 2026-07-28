@@ -299,6 +299,9 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 # =============== Forgit ===============
 # Must load after the git aliases defined earlier in this file — forgit's
 # aliases (ga, gd, gco, gcb, gss) intentionally win over the plain git ones.
+# ga/gd/gco/gcb fall back to plain git behavior when given args, so the
+# override is safe. gss has no such fallback: it replaces `git status -s`
+# with forgit's stash browser entirely (unrelated command, not a superset).
 [ -f "$HOME/.zsh/forgit/forgit.plugin.zsh" ] && source "$HOME/.zsh/forgit/forgit.plugin.zsh"
 
 # =============== Starship ===============
