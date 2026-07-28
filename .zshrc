@@ -86,6 +86,11 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 # Case insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# Required by fzf-tab: let it capture the unambiguous-prefix case instead of
+# zsh showing its own completion menu.
+zstyle ':completion:*' menu no
+# fzf-tab: preview directory contents with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
@@ -101,7 +106,7 @@ source <(carapace _carapace)
 # =============== Aliases ===============
 # General
 alias open="xdg-open"
-alias ls='eza --icons'
+alias ls='eza --icons=auto'
 alias ll='eza -la --icons --git'
 alias la='eza -lah --icons --git'
 alias cat='bat'
@@ -275,6 +280,24 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 # Nicer fzf UI defaults
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :100 {}'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --icons --level=2 {}'"
+
+# =============== Atuin ===============
+# Must load after the FZF block above — both bind Ctrl-R, atuin should win.
+command -v atuin &>/dev/null && eval "$(atuin init zsh)"
+
+# =============== FZF-tab ===============
+# Must load after the FZF block above (fzf's own shell integration also binds
+# Tab for its `**`-trigger completion) and before the zsh-syntax-highlighting /
+# zsh-autosuggestions block below — fzf-tab needs to be the last thing to bind
+# Tab. See fzf-tab's README "Compatibility with other plugins".
+[ -f "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh" ] && source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
+
+# =============== Forgit ===============
+# Must load after the git aliases defined earlier in this file — forgit's
+# aliases (ga, gd, gco, gcb, gss) intentionally win over the plain git ones.
+[ -f "$HOME/.zsh/forgit/forgit.plugin.zsh" ] && source "$HOME/.zsh/forgit/forgit.plugin.zsh"
 
 # =============== Starship ===============
 eval "$(starship init zsh)"
