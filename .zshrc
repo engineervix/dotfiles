@@ -272,7 +272,9 @@ autoload -U add-zsh-hook
 add-zsh-hook chpwd add_nodemodules_bin
 
 # =============== FZF ===============
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# System fzf (zypper pkg) ships integration under /usr/share/fzf/shell, not
+# ~/.fzf.zsh (that file only exists for fzf's own git-clone install script).
+eval "$(fzf --zsh)"
 # Use fd as the default source for fzf (respects .gitignore, includes hidden)
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 # Ctrl+T and Alt+C use fd too, for consistent behaviour
