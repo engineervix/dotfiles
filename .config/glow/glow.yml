@@ -1,0 +1,13 @@
+# style name or JSON path (default "auto")
+# Tilde/env-vars in this value are NOT expanded by glow (only used for its own
+# existence check, then discarded) — real value comes from GLOW_STYLE in
+# .zshrc, which the shell expands before glow ever sees it.
+style: "auto"
+# mouse support (TUI-mode only)
+mouse: false
+# use pager to display markdown
+pager: false
+# word-wrap at width
+width: 80
+# show all files, including hidden and ignored.
+all: false

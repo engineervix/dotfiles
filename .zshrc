@@ -336,6 +336,9 @@ function y() {
     command rm -f -- "$tmp"
 }
 
+# =============== Glow ===============
+export GLOW_STYLE="$HOME/.config/glow/catppuccin-mocha.json"
+
 # =============== Zoxide ===============
 eval "$(zoxide init zsh)"
 
