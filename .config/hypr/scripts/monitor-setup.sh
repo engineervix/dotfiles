@@ -13,28 +13,30 @@ configure_monitors() {
     if hyprctl monitors all -j | grep -q "\"name\": \"$EXTERNAL\""; then
         # External connected: disable eDP-1 entirely so Hyprland moves all workspaces
         # to HDMI-A-1 and no phantom workspace is created on the inactive screen.
-        hyprctl keyword monitor "$INTERNAL,disable"
-        hyprctl keyword layout:single_window_aspect_ratio "1 1"
+        hyprctl eval "hl.monitor({ output = '$INTERNAL', disabled = true })"
+        hyprctl eval 'hl.config({ layout = { single_window_aspect_ratio = {1, 1} } })'
     else
-        # External gone: re-enable eDP-1. CRITICAL: Hyprland 0.55 cannot undo a
-        # `monitor=eDP-1,disable` via `keyword monitor eDP-1,<mode>` at runtime —
-        # that call is a silent no-op, so eDP-1 stays dark. Only a config reload
-        # (which re-reads monitors.conf, where eDP-1 has no disable) re-enables a
-        # disabled output. Guard the reload with `hyprctl monitors` (active
-        # outputs only): if eDP-1 is already active we skip it, so the
+        # External gone: re-enable eDP-1 via config reload (re-reads monitors.lua,
+        # where eDP-1 has no disable). Under the Lua config, `hl.monitor({disabled
+        # = false, ...})` CAN re-enable a disabled output live (unlike old hyprlang
+        # `keyword monitor`, which was a silent no-op) — see MonitorRuleManager's
+        # ensureMonitorStatus(). Kept as reload for now since it's the
+        # already-proven path; switching to a direct hl.monitor() call is a
+        # possible future simplification. Guard the reload with `hyprctl monitors`
+        # (active outputs only): if eDP-1 is already active we skip it, so the
         # monitoradded event the reload itself fires doesn't reload again.
         if ! hyprctl monitors -j | grep -q "\"name\": \"$INTERNAL\""; then
             hyprctl reload
             sleep 0.5
         fi
-        hyprctl keyword layout:single_window_aspect_ratio "0 0"
-        hyprctl dispatch dpms on "$INTERNAL"
+        hyprctl eval 'hl.config({ layout = { single_window_aspect_ratio = {0, 0} } })'
+        hyprctl dispatch "hl.dsp.dpms({ action = 'on', monitor = '$INTERNAL' })"
         # Pull every workspace (incl. any stranded on the FALLBACK headless
         # output created during the zero-monitor gap) back onto eDP-1, focus it.
         hyprctl workspaces -j | jq -r '.[].id' | while read -r ws; do
-            hyprctl dispatch moveworkspacetomonitor "$ws" "$INTERNAL"
+            hyprctl dispatch "hl.dsp.workspace.move({ workspace = $ws, monitor = '$INTERNAL' })"
         done
-        hyprctl dispatch focusmonitor "$INTERNAL"
+        hyprctl dispatch "hl.dsp.focus({ monitor = '$INTERNAL' })"
     fi
 }
 
