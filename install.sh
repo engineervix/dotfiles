@@ -84,6 +84,7 @@ link "${DOTFILES_DIR}/.config/zathura"     "$HOME/.config/zathura"
 link "${DOTFILES_DIR}/.config/yazi"        "$HOME/.config/yazi"
 link "${DOTFILES_DIR}/.config/atuin"       "$HOME/.config/atuin"
 link "${DOTFILES_DIR}/.config/glow"        "$HOME/.config/glow"
+link "${DOTFILES_DIR}/.config/forgit"      "$HOME/.config/forgit"
 
 mkdir -p "$HOME/.gnupg"
 link "${DOTFILES_DIR}/.gnupg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"

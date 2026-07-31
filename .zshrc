@@ -316,7 +316,26 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 # pane (not a tty), so it falls back to a narrow default and wraps early.
 # Force it to use fzf's exact preview-pane width instead.
 export FORGIT_PREVIEW_PAGER='delta --width="$FZF_PREVIEW_COLUMNS"'
+# Override glo's preview with a wrapper that also renders images (kitty icat)
+# for commits touching image files — delta alone can only print "Binary
+# files ... differ". FORGIT_LOG_FZF_OPTS is appended after forgit's own
+# --preview flag in the same fzf options string, and fzf keeps the last
+# value of a repeated flag, so this replaces it outright; the enter/yank
+# --bind's are separate flags and stay untouched. See .config/forgit/log-preview.sh.
+export FORGIT_LOG_FZF_OPTS="--preview=\"$HOME/.config/forgit/log-preview.sh {}\""
 [ -f "$HOME/.zsh/forgit/forgit.plugin.zsh" ] && source "$HOME/.zsh/forgit/forgit.plugin.zsh"
+
+# log-preview.sh's images use kitty's unicode-placeholder mode, which is
+# supposed to be self-cleaning (the image is anchored to ordinary text, so
+# it clears when that text is overwritten) — but wrap glo to sweep up any
+# leftovers once the picker quits (accept, Esc, Ctrl-C) anyway, as cheap
+# insurance against edge cases (e.g. a render killed mid-transfer by the
+# timeout in log-preview.sh).
+unalias glo 2>/dev/null
+glo() {
+    forgit::log "$@"
+    command -v kitten &>/dev/null && timeout --signal=TERM --kill-after=1 2 kitten icat --clear-all &>/dev/null
+}
 
 # =============== Starship ===============
 eval "$(starship init zsh)"
