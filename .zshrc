@@ -312,6 +312,10 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 # ga/gd/gco/gcb fall back to plain git behavior when given args, so the
 # override is safe. gss has no such fallback: it replaces `git status -s`
 # with forgit's stash browser entirely (unrelated command, not a superset).
+# delta can't detect terminal width via ioctl when fzf pipes its preview
+# pane (not a tty), so it falls back to a narrow default and wraps early.
+# Force it to use fzf's exact preview-pane width instead.
+export FORGIT_PREVIEW_PAGER='delta --width="$FZF_PREVIEW_COLUMNS"'
 [ -f "$HOME/.zsh/forgit/forgit.plugin.zsh" ] && source "$HOME/.zsh/forgit/forgit.plugin.zsh"
 
 # =============== Starship ===============
