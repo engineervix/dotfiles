@@ -129,6 +129,18 @@ render_block() {
     debug "  render_block $path exit=$?"
 }
 
+# Rule above/below each image, red for the old version and green for the
+# new — plain colored text printed before/after the icat call, not part of
+# the image itself, so there's no risk of it interfering with the
+# placeholder color that encodes which image a given block belongs to
+# (unlike a left/right border would, which needs to sit on the same line
+# as the image content).
+draw_rule() {
+    local color=$1 rule
+    printf -v rule '%*s' "$FZF_PREVIEW_COLUMNS" ''
+    printf '\033[%sm%s\033[0m\n' "$color" "${rule// /─}"
+}
+
 parent_sha=$(git rev-parse "${sha}^" 2>/dev/null) || parent_sha=""
 debug "parent_sha=[$parent_sha]"
 
@@ -148,12 +160,16 @@ for f in "${images[@]}"; do
     printf '\n\033[1m%s\033[0m\n' "$f"
     if [[ -n $old_render ]]; then
         printf '\033[2mBefore:\033[0m\n'
+        draw_rule 31
         render_block "$old_render"
+        draw_rule 31
     else
         printf '\033[2m(new file)\033[0m\n'
     fi
     if [[ -n $new_render ]]; then
         printf '\033[2mAfter:\033[0m\n'
+        draw_rule 32
         render_block "$new_render"
+        draw_rule 32
     fi
 done
