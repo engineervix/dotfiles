@@ -109,7 +109,7 @@ source <(carapace _carapace)
 
 # =============== Aliases ===============
 # General
-alias open="xdg-open"
+open() { xdg-open "$@" &>/dev/null & disown }
 alias ls='eza --icons=auto'
 alias ll='eza -la --icons --git'
 alias la='eza -lah --icons --git'
