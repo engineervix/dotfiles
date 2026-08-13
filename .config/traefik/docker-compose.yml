@@ -1,10 +1,27 @@
 services:
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    container_name: docker-socket-proxy
+    restart: unless-stopped
+    security_opt:
+      - label:disable
+    environment:
+      CONTAINERS: 1
+      NETWORKS: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik
+
   traefik:
     image: traefik:v3.7
     container_name: traefik
     restart: unless-stopped
+    depends_on:
+      - docker-socket-proxy
     command:
       - --providers.docker=true
+      - --providers.docker.endpoint=tcp://docker-socket-proxy:2375
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=traefik
       - --entryPoints.web.address=:80
@@ -12,9 +29,7 @@ services:
       - --api.dashboard=true
     ports:
       - "80:80"
-      - "8080:8080" # dashboard: http://localhost:8080/dashboard/
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "127.0.0.1:8080:8080" # dashboard: http://localhost:8080/dashboard/ (loopback only)
     networks:
       - traefik
 
