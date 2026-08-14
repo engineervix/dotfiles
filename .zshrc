@@ -84,8 +84,8 @@ export FPATH="$HOME/.local/share/eza-completions/zsh:$FPATH"
 # Enable completion cache
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
-# Case insensitive completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# Case-insensitive + partial/substring completion (ohmyzsh default matcher chain)
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|=*' 'l:|=* r:|=*'
 # Required by fzf-tab: let it capture the unambiguous-prefix case instead of
 # zsh showing its own completion menu.
 zstyle ':completion:*' menu no
