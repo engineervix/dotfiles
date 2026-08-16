@@ -1,0 +1,12 @@
+[mgr]
+
+prepend_keymap = [
+	# Open the current directory in a new kitty split, mirroring the
+	# ctrl+shift+' / ctrl+shift+\ splits in kitty.conf. --cwd is passed
+	# explicitly as $(pwd): `shell` spawns the command with cwd set to
+	# yazi's browsed directory, but `kitty @ launch` does NOT inherit that
+	# by default (only --cwd=current does, and that tracks the window's
+	# shell, not this subprocess) — so it must be passed explicitly.
+	{ on = "'",  run = "shell 'kitty @ launch --location=hsplit --cwd \"$(pwd)\"' --orphan", desc = "Open cwd in a new kitty hsplit" },
+	{ on = "\\", run = "shell 'kitty @ launch --location=vsplit --cwd \"$(pwd)\"' --orphan", desc = "Open cwd in a new kitty vsplit" },
+]
