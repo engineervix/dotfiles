@@ -1,0 +1,10 @@
+# https://hunk.dev/docs/
+# Only overriding what differs from hunk's own defaults (mode=auto,
+# line_numbers=true, etc. are already fine as-is).
+
+theme = "catppuccin-mocha" # match Kitty/Ghostty (Catppuccin Mocha)
+
+# Off by default upstream. The whole point of evaluating hunk over
+# diffnav/tuicr was live Claude Code annotations inline beside the diff —
+# show them without having to remember to press `a` each session.
+agent_notes = true
