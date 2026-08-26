@@ -132,7 +132,8 @@ element-text {
 }
 
 message {
-    padding:    0.5em 1em;
-    text-color: @fg-dim;
-    background-color: @bg;
+    padding:    0.8em 1em;
+    text-color: @fg;
+    background-color: @bg-alt;
+    border-radius: 0 0 8px 8px;
 }
