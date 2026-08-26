@@ -40,6 +40,13 @@ hl.bind("Print",                    hl.dsp.exec_cmd("grim ~/Pictures/Screenshots
 hl.bind(mainMod .. " + SHIFT + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_screenshot.png') && notify-send \"Screenshot Captured\""))
 hl.bind(mainMod .. " + Print",         hl.dsp.exec_cmd("grim -g \"$(slurp -d)\" - | wl-copy && notify-send \"Screenshot Copied to Clipboard\""))
 
+-- Screenshot + annotate (Satty) — separate key, kept off the quick-capture
+-- binds above since annotation is only wanted sometimes, not every shot.
+-- slurp also selects a whole output on click, so this covers full-screen too.
+-- Full path to satty: it lives in ~/.cargo/bin, which is only on PATH via
+-- shell rc files — Hyprland's own process env never sources those.
+hl.bind(mainMod .. " + ALT + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" -t ppm - | $HOME/.cargo/bin/satty --filename -"))
+
 -- Clipboard History
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p \"Clipboard\" | cliphist decode | wl-copy"))
 

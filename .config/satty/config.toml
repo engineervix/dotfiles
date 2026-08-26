@@ -1,0 +1,12 @@
+[general]
+# Match the naming scheme used by the raw grim/slurp binds in
+# hypr/conf/keybindings.lua so annotated and non-annotated shots sit
+# together in the same folder with the same filename shape.
+output-filename = "~/Pictures/Screenshots/%Y-%m-%d-%H%M%S_screenshot.png"
+copy-command = "wl-copy"
+initial-tool = "arrow"
+early-exit = ["all"]
+actions-on-enter = ["save-to-file", "save-to-clipboard"]
+actions-on-escape = ["exit"]
+no-window-decoration = true
+notification-thumbnail = "screenshot"
