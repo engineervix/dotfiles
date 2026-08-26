@@ -85,6 +85,7 @@ link "${DOTFILES_DIR}/.config/yazi"        "$HOME/.config/yazi"
 link "${DOTFILES_DIR}/.config/atuin"       "$HOME/.config/atuin"
 link "${DOTFILES_DIR}/.config/glow"        "$HOME/.config/glow"
 link "${DOTFILES_DIR}/.config/forgit"      "$HOME/.config/forgit"
+link "${DOTFILES_DIR}/.config/hunk"        "$HOME/.config/hunk"
 link "${DOTFILES_DIR}/.config/traefik"     "$HOME/.config/traefik"
 
 mkdir -p "$HOME/.config/systemd/user"
