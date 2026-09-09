@@ -86,6 +86,9 @@ end)
 
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("killall waybar; waybar"))
 
+-- Toggle extended desktop vs. external-replaces-laptop-screen (monitor-lib.sh)
+hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("~/.config/hypr/scripts/monitor-mode-toggle.sh"))
+
 -- Group/Tabbed Windows
 hl.bind(mainMod .. " + G",             hl.dsp.group.toggle())
 hl.bind(mainMod .. " + bracketright",  hl.dsp.group.next())

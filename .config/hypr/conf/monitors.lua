@@ -1,10 +1,12 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
--- External monitor — at origin; eDP-1 auto-places to the right when both connected
+-- External monitor — at origin; eDP-1 auto-places to the left when both
+-- connected, matching its physical position on the desk.
 hl.monitor({ output = "HDMI-A-1", mode = "3840x2160@60", position = "0x0", scale = 1.5 })
 
--- Laptop screen — `auto` places at 0x0 when alone, 2560x0 when HDMI-A-1 is at origin
-hl.monitor({ output = "eDP-1", mode = "1920x1200@60", position = "auto", scale = 1.25 })
+-- Laptop screen — `auto-left` places it at 0x0 when alone, to the left of
+-- HDMI-A-1 (negative x) when both are active.
+hl.monitor({ output = "eDP-1", mode = "1920x1200@60", position = "auto-left", scale = 1.25 })
 
 -- Fallback for any unrecognised monitor
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
