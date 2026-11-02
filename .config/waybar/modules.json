@@ -93,6 +93,8 @@
     "clock": {
         "interval": 1,
         "format": "{:%H:%M:%S %Z | %a, %d %b}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>"
+        "timezones": ["", "Europe/London", "Africa/Lusaka", "America/New_York", "Asia/Manila"],
+        "timezone-tooltip-format": "{:%H:%M  %a  %Z (UTC%z)}",
+        "tooltip-format": "<tt><small>{calendar}\n\n{tz_list}</small></tt>"
     }
 }
