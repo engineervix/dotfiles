@@ -19,7 +19,7 @@
 
 configuration {
     modi:                "drun,window,run";
-    font:                "JetBrainsMono Nerd Font 11";
+    font:                "Maple Mono NF 11";
     show-icons:          true;
     icon-theme:          "Papirus-Dark";
     display-drun:        " Apps";
