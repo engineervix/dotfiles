@@ -430,3 +430,7 @@ typing() {
   # Reset colour 0 to whatever your terminal config says
   printf '\e]104;0\a'
 }
+
+# =============== viteplus ===============
+# Vite+ bin (https://viteplus.dev)
+. "/home/victor/.config/vite-plus/env"
