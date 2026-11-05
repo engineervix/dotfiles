@@ -110,6 +110,7 @@ source <(carapace _carapace)
 # =============== Aliases ===============
 # General
 open() { xdg-open "$@" &>/dev/null & disown }
+alias v='nvim'
 alias ls='eza --icons=auto'
 alias ll='eza -la --icons --git'
 alias la='eza -lah --icons --git'
@@ -123,6 +124,9 @@ alias ts='date +"%Y-%m-%d-%H-%M-%S"'
 alias trash='gio trash'
 alias pipup='pip install --upgrade pip'
 alias chromium='chromium --user-data-dir="$(mktemp -d)"'
+alias lsv='lsvirtualenv -b'
+alias lzg="lazygit"
+alias lzd="lazydocker"
 
 # Safety aliases
 alias rm='rm -i'
