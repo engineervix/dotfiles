@@ -137,6 +137,17 @@ alias cpnuke='cliphist list | head -n1 | cliphist delete'
 # inside quotes.
 cpwd() { local p=${(q)PWD}; print -rn -- "${p/#${(q)HOME}/~}" | wl-copy }
 
+# Allow having invoke tasks.py in a `utils` subdir, and avoid having to type `-r utils` each time
+inv() {
+  if [[ -f utils/tasks.py ]]; then
+    command inv -r utils "$@"
+  else
+    command inv "$@"
+  fi
+}
+
+invoke() { inv "$@" }
+
 # Safety aliases
 alias rm='rm -i'
 alias cp='cp -i'
