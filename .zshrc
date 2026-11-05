@@ -128,6 +128,15 @@ alias lsv='lsvirtualenv -b'
 alias lzg="lazygit"
 alias lzd="lazydocker"
 
+# Wipe most recent cliphist entry (e.g. after copying a secret cliphist
+# shouldn't have retained — pass's own leak is patched separately)
+alias cpnuke='cliphist list | head -n1 | cliphist delete'
+
+# Copy cwd to clipboard with ~ for $HOME. Escape first, then swap the prefix
+# (escaping after would turn ~ into \~). Paste unquoted: "~" doesn't expand
+# inside quotes.
+cpwd() { local p=${(q)PWD}; print -rn -- "${p/#${(q)HOME}/~}" | wl-copy }
+
 # Safety aliases
 alias rm='rm -i'
 alias cp='cp -i'
