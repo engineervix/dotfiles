@@ -427,3 +427,18 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# gtypist
+typing() {
+  # Set ANSI colour 0 ("black") to Catppuccin Mocha base, so gtypist's dark text matches your background
+  printf '\e]4;0;#1e1e2e\a'
+
+  # -n: no WPM timer in drills
+  # -b: track personal bests
+  # --banner-colors=bar,title,name,version
+  #   (the banner is drawn in reverse video, so the 1st number is the bar colour and the 2nd is the title text)
+  gtypist -n -b --banner-colors=6,0,0,0 "$@"
+
+  # Reset colour 0 to whatever your terminal config says
+  printf '\e]104;0\a'
+}
