@@ -1,0 +1,4 @@
+# Per-project host routes stay local: they name client projects and this
+# repo is public. Copy dynamic/example.yml.sample to start one.
+dynamic/*
+!dynamic/*.sample

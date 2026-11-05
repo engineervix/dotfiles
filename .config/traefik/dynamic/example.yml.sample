@@ -1,0 +1,13 @@
+# Route to a dev server running on the host, not in docker.
+# Copy to <project>.yml (gitignored) and adjust name, host and port.
+# The server must listen on 0.0.0.0, e.g. `runserver 0.0.0.0:8000`.
+http:
+  routers:
+    myapp:
+      rule: Host(`myapp.localhost`)
+      service: myapp-web
+  services:
+    myapp-web:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:8000

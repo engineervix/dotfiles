@@ -27,9 +27,15 @@ services:
       - --entryPoints.web.address=:80
       - --api.insecure=true
       - --api.dashboard=true
+      - --providers.file.directory=/dynamic # routes to dev servers running on the host
+      - --providers.file.watch=true
     ports:
       - "80:80"
       - "127.0.0.1:8080:8080" # dashboard: http://localhost:8080/dashboard/ (loopback only)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./dynamic:/dynamic:ro
     networks:
       - traefik
 
