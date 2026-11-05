@@ -44,9 +44,6 @@ export PATH="$PATH:/usr/sbin"
 # =============== SSH Agent ===============
 eval `keychain --eval --quiet ~/.ssh/id_ed25519 ~/.ssh/id_rsa`
 
-# =============== Volta ===============
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
 
 # =============== Rust ===============
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
