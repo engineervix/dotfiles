@@ -8,3 +8,5 @@ theme = "catppuccin-mocha" # match Kitty/Ghostty (Catppuccin Mocha)
 # diffnav/tuicr was live Claude Code annotations inline beside the diff —
 # show them without having to remember to press `a` each session.
 agent_notes = true
+
+wrap_lines = true
