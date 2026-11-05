@@ -416,8 +416,10 @@ export GLOW_STYLE="$HOME/.config/glow/catppuccin-mocha.json"
 # =============== Zoxide ===============
 eval "$(zoxide init zsh)"
 
+# =============== direnv ===============
+eval "$(direnv hook zsh)"
 
-
+# =============== pnpm ===============
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
