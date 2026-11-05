@@ -248,6 +248,33 @@ mkdir_date() {
   mkdir -p $(date '+%Y-%h-%d-%a')
 }
 
+date_until() {
+  if [ $# -eq 0 ]; then
+    echo "usage: date_until <date>   e.g. date_until 2026-12-25 or date_until 'next friday'" >&2
+    return 1
+  fi
+
+  local target today diff abs weeks rem
+  target=$(date -d "$*" +%F 2>/dev/null) || { echo "Can't parse date: $*" >&2; return 1; }
+  today=$(date +%F)
+
+  # Compare calendar dates at UTC midnight so DST shifts don't skew the count
+  diff=$(( ( $(date -u -d "$target" +%s) - $(date -u -d "$today" +%s) ) / 86400 ))
+  abs=${diff#-}
+  weeks=$(( abs / 7 ))
+  rem=$(( abs % 7 ))
+
+  local detail=""
+  if [ "$abs" -ge 7 ]; then
+    detail=" ($weeks week$([ "$weeks" -ne 1 ] && echo s), $rem day$([ "$rem" -ne 1 ] && echo s))"
+  fi
+
+  if   [ "$diff" -gt 0 ]; then echo "$target is $abs day$([ "$abs" -ne 1 ] && echo s) away$detail"
+  elif [ "$diff" -lt 0 ]; then echo "$target was $abs day$([ "$abs" -ne 1 ] && echo s) ago$detail"
+  else echo "$target is today"
+  fi
+}
+
 kill_spaces() {
   command find . -name "*.$1" -type f -print0 | while IFS= read -r -d $'\0' f; do mv -v "$f" "${f// /_}"; done
 }
