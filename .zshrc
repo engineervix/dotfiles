@@ -416,15 +416,6 @@ eval "$(zoxide init zsh)"
 # =============== direnv ===============
 eval "$(direnv hook zsh)"
 
-# =============== pnpm ===============
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
-
 # gtypist
 typing() {
   # Set ANSI colour 0 ("black") to Catppuccin Mocha base, so gtypist's dark text matches your background
