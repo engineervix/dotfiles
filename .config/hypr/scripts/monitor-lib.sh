@@ -33,10 +33,19 @@ configure_monitors() {
         hyprctl eval "hl.monitor({ output = '$INTERNAL', disabled = true })"
         hyprctl eval 'hl.config({ layout = { single_window_aspect_ratio = {1, 1} } })'
     elif external_connected; then
-        # Extended mode: just make sure eDP-1 is active. It has no disable in
-        # monitors.lua and sits to the left of HDMI-A-1 via its `auto-left`
-        # position — existing HDMI-A-1 workspaces are left alone.
+        # Extended mode: make sure eDP-1 is active. It has no disable in
+        # monitors.lua; the external monitors' auto-left/auto-right positions
+        # put it on the correct side.
+        # Re-enabling eDP-1 makes Hyprland return the workspaces it held before
+        # switch mode disabled it. Snapshot what's on HDMI-A-1 and move it back,
+        # so the external keeps them all and eDP-1 gets a fresh one. No-op when
+        # eDP-1 was already active.
+        local ws
+        ws=$(hyprctl workspaces -j | jq -r ".[] | select(.monitor == \"$EXTERNAL\") | .id")
         ensure_internal_active
+        for id in $ws; do
+            hyprctl dispatch "hl.dsp.workspace.move({ workspace = $id, monitor = '$EXTERNAL' })"
+        done
         # single_window_aspect_ratio is global, not per-monitor — still needs
         # the external-monitor constraint here, else a leftover {0,0} from
         # laptop-only mode stretches lone windows full-width on HDMI-A-1 too.
