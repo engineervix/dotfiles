@@ -9,7 +9,7 @@ services:
       CONTAINERS: 1
       NETWORKS: 1
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${XDG_RUNTIME_DIR}/docker.sock:/var/run/docker.sock:ro
     networks:
       - traefik
 
@@ -33,7 +33,8 @@ services:
       - "80:80"
       - "127.0.0.1:8080:8080" # dashboard: http://localhost:8080/dashboard/ (loopback only)
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # rootless Docker blocks host loopback, so point at a host-local address
+      - "host.docker.internal:10.254.254.254"
     volumes:
       - ./dynamic:/dynamic:ro
     networks:
