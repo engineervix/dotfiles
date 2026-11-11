@@ -1,0 +1,35 @@
+name: Kitty kitten
+
+# Weekly run catches kitty releases that break the internals move_into.py relies on.
+on:
+  push:
+    paths:
+      - ".config/kitty/move_into.py"
+      - "tests/test_move_into.py"
+      - ".github/workflows/kitty-kitten.yml"
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # apt's kitty is too old to have insert_window_next_to, so use the upstream release.
+      - name: Install latest kitty
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo kovidgoyal/kitty --pattern 'kitty-*-x86_64.txz' --dir "$RUNNER_TEMP"
+          mkdir "$RUNNER_TEMP/kitty"
+          tar -xJf "$RUNNER_TEMP"/kitty-*-x86_64.txz -C "$RUNNER_TEMP/kitty"
+          "$RUNNER_TEMP/kitty/bin/kitty" --version
+
+      - name: Run test
+        run: '"$RUNNER_TEMP/kitty/bin/kitty" +launch tests/test_move_into.py'
