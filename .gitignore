@@ -8,3 +8,6 @@
 # Temporary files
 *~
 *.swp
+
+# Python bytecode (kitty compiles its kittens)
+__pycache__/
