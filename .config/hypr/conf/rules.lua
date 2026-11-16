@@ -64,3 +64,17 @@ hl.window_rule({
 -- hl.window_rule({ name = "workspace-spotify", match = { class = "^(Spotify)$" }, workspace = "3" })
 -- hl.window_rule({ name = "workspace-vscode", match = { class = "^(code-url-handler)$" }, workspace = "4" })
 -- hl.window_rule({ name = "workspace-vscode2", match = { class = "^(VSCode)$" }, workspace = "4" })
+
+-- Kitty project sessions (kitty.conf: map f7>p goto_session ...). Each session
+-- file sets `os_window_class kitty-session`, so every session window:
+--  * opens on the next empty workspace after the current one, on the same
+--    monitor ("emptynm", see configuring/selectors.md in the Hyprland wiki)
+--  * starts maximized. The lone window would otherwise get the 1:1
+--    single_window_aspect_ratio padding that scripts/monitor-lib.sh sets,
+--    which squeezes it on a wide monitor. Maximized windows skip that padding.
+hl.window_rule({
+    name      = "kitty-session",
+    match     = { class = "^(kitty-session)$" },
+    workspace = "emptynm",
+    maximize  = true,
+})
