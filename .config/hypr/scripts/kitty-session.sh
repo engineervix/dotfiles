@@ -9,7 +9,7 @@
 # to a NORMAL kitty process over its remote control socket instead.
 #
 # Steps:
-#   1. rofi picks a session file from $KITTY_SESSIONS_DIR
+#   1. rofi picks a session file from $KITTY_SESSIONS_DIR (with an optional icon)
 #   2. find live kitty processes: skip the quick access panel, skip dead sockets
 #   3. session already open in one of them -> ask that process to go to it
 #      (kitty can't always raise the window, see misc:focus_on_activate)
@@ -48,8 +48,18 @@ else
     shopt -s nullglob
     files=("$dir"/*.kitty-session)
     ((${#files[@]})) || { say "No sessions in $dir"; exit 1; }
-    # -no-custom: only listed names (and it returns at once on an empty list)
-    name=$(basename -a -s .kitty-session "${files[@]}" | rofi -dmenu -no-custom -i -p session)
+    # Row option "name\0icon\x1f<path>" gives an entry an icon (show-icons is on in
+    # config.rasi). Icon = optional <name>.svg|png|webp next to the session file.
+    name=$(
+        for f in "${files[@]}"; do
+            n=${f##*/} n=${n%.kitty-session} icon=""
+            for ext in svg png webp; do
+                [[ -f $dir/$n.$ext ]] && { icon=$dir/$n.$ext; break; }
+            done
+            if [[ -n $icon ]]; then printf '%s\0icon\x1f%s\n' "$n" "$icon"; else echo "$n"; fi
+        # -no-custom: only listed names (and it returns at once on an empty list)
+        done | rofi -dmenu -no-custom -i -p session
+    )
 fi
 [[ -n $name ]] || exit 0 # rofi was cancelled
 file="$dir/$name.kitty-session"
