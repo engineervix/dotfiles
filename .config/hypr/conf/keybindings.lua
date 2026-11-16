@@ -2,6 +2,7 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("kitty"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitten quick-access-terminal")) -- Quake like quick access terminal (needs kitty >= 0.42, see https://sw.kovidgoyal.net/kitty/kittens/quick-access-terminal/)
+hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("~/.config/hypr/scripts/kitty-session.sh")) -- Pick a kitty project session; always opens in a normal kitty, never in the quick access terminal (see the script header)
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("wlogout"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
