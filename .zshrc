@@ -416,6 +416,13 @@ eval "$(zoxide init zsh)"
 # =============== direnv ===============
 eval "$(direnv hook zsh)"
 
+# =============== Prefill prompt ===============
+# Kitty session files can't type into a window. A session launches `zsh` with
+# PREFILL=<cmd> and this puts <cmd> on the first prompt without running it.
+# print -z: https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html
+# Why sessions can't send text: https://github.com/kovidgoyal/kitty/issues/3702
+[[ -n $PREFILL ]] && { print -z -- "$PREFILL"; unset PREFILL; }
+
 # gtypist
 typing() {
   # Set ANSI colour 0 ("black") to Catppuccin Mocha base, so gtypist's dark text matches your background
