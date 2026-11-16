@@ -18,6 +18,7 @@ x-scheme-handler/bruno=bruno.desktop
 application/pdf=org.pwmt.zathura.desktop
 x-scheme-handler/mailto=google-chrome.desktop
 application/x-zerosize=dev.zed.Zed.desktop
+x-scheme-handler/slack=slack.desktop
 
 [Added Associations]
 image/png=gimp.desktop;imv-dir.desktop;imv.desktop;
