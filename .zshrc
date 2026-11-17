@@ -354,6 +354,28 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 # Tab. See fzf-tab's README "Compatibility with other plugins".
 [ -f "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh" ] && source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
 
+# Workaround for carapace + fzf-tab inserting `File\\ Name` instead of
+# `File\ Name`. carapace escapes the value itself and passes `compadd -Q`, then
+# fzf-tab captures it and escapes it again. This strips one level inside
+# -ftb-compadd, for carapace completions only: zsh's own _files also passes -Q
+# and must keep its `\\`. Same idea as https://github.com/Aloxaf/fzf-tab/pull/584,
+# plus the carapace check (see also fzf-tab#503, carapace#1212). Delete this block
+# once either is merged. enable-fzf-tab already copied -ftb-compadd into `compadd`,
+# so copy it again. Does nothing if fzf-tab isn't installed; if it is but its source
+# changed and the anchor line is gone, it prints a warning and does nothing.
+() {
+  (( $+functions[-ftb-compadd] )) || return
+  local anchor='word=$__hits[i] dscr=$__dscr[i]'
+  # ${words[1]:t}: the command's basename, so `/usr/bin/wc <Tab>` is covered too
+  local ins='(( ${_opts[(I)-Q]} )) && [[ $_comps[${words[1]:t}] == _carapace* ]] && word=${word//\\\\/\\}'
+  local src=$functions[-ftb-compadd]
+  [[ $src == *'word=${word//\\\\/\\}'* ]] && return          # upstream already fixed
+  local -a hit=( ${(M)${(f)src}:#*${anchor}*} )
+  (( $#hit == 1 )) || { print -u2 "fzf-tab patch: anchor found $#hit times"; return 1; }
+  functions[-ftb-compadd]=${src/"$anchor"/$anchor$'\n'$ins}
+  functions[compadd]=$functions[-ftb-compadd]
+}
+
 # =============== Forgit ===============
 # Must load after the git aliases defined earlier in this file — forgit's
 # aliases (ga, gd, gco, gcb, gss) intentionally win over the plain git ones.
