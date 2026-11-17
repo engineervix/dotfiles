@@ -75,8 +75,12 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 # =============== Completions ===============
-fpath=(~/.zfunc "$HOME/.zsh/zsh-completions/src" $fpath)
-export FPATH="$HOME/.local/share/eza-completions/zsh:$FPATH"
+# typeset -U: no duplicate entries. Don't `export FPATH` — it leaks into child
+# shells (kitty sessions, nested zsh) and the entries pile up.
+# forgit/completions: forgit's README says manual installs must add it here,
+# before compinit, or `ga <Tab>` etc. get no forgit completion.
+typeset -U fpath
+fpath=(~/.zfunc "$HOME/.zsh/zsh-completions/src" "$HOME/.zsh/forgit/completions" $fpath)
 
 # Enable completion cache
 zstyle ':completion:*' use-cache on
@@ -93,6 +97,10 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # fzf-tab: preview directory contents with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
+# Needs `skip_global_compinit=1` in ~/.zshenv (not tracked here, installers write
+# to that file). Without it openSUSE's /etc/zshrc runs compinit first, with only
+# the default fpath, and the `compinit -C` below reuses that dump. Then the dirs
+# added above (zsh-completions, forgit) never get their completions registered.
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
