@@ -109,6 +109,25 @@ compinit -C
 
 # =============== Carapace ===============
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+# Make carapace ignore case, so `fo<Tab>` finds `Foo`. It also needs the
+# matcher-list zstyle above, or zsh throws carapace's values away again.
+# carapace only matches from the start of a name: `oo<Tab>` won't find `Foo`.
+export CARAPACE_MATCH=1
+# Leave commands that mostly take file paths to zsh. Its completers match inside
+# names (`oo<Tab>` finds `Foo`), which carapace's can't, and they skip the
+# carapace + fzf-tab `\\` bug. Everything else stays with carapace, git included:
+# zsh's _git is case-sensitive for branch names (`rel<Tab>` misses `Release-1`),
+# carapace with CARAPACE_MATCH=1 isn't. List picked from my atuin history.
+# TODO: carapace's `git add` misses untracked files inside an untracked directory
+# (`git add newdir/F<Tab>` beeps) and untracked names with spaces (`git add d/Ya<Tab>`
+# for `Yak yak.txt`); zsh's _git completes both. Look for a carapace-bin fix or issue.
+# Otherwise give `git` back to zsh, which makes branch names case-sensitive again.
+_carapace_excludes=(
+  ls cat cp mv rm mkdir touch ln chmod tar du head tree unzip rsync
+  nvim vim bat eza sudo
+)
+export CARAPACE_EXCLUDES=${(j:,:)_carapace_excludes}
+unset _carapace_excludes
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 source <(carapace _carapace)
 
