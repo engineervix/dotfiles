@@ -94,8 +94,9 @@ zstyle ':completion:*' menu no
 # (Linux/openSUSE already populates LS_COLORS via /etc/zshrc's dircolors
 # call before this file loads, unlike macOS — no eval needed here.)
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# fzf-tab: preview directory contents with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# fzf-tab: preview directory contents with eza when completing cd. cd is an alias
+# for z (see Aliases), and fzf-tab sees the context as `z`, so match both.
+zstyle ':fzf-tab:complete:(cd|z):*' fzf-preview 'eza -1 --color=always $realpath'
 
 # Needs `skip_global_compinit=1` in ~/.zshenv (not tracked here, installers write
 # to that file). Without it openSUSE's /etc/zshrc runs compinit first, with only
@@ -131,7 +132,10 @@ _carapace_excludes=(
 )
 export CARAPACE_EXCLUDES=${(j:,:)_carapace_excludes}
 unset _carapace_excludes
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+# fzf-tab builds its group headers from this string and pads them by length, so
+# escape codes in it (carapace's docs suggest a dim one) throw the layout off.
+# Keep it plain.
+zstyle ':completion:*:descriptions' format '[%d]'
 source <(carapace _carapace)
 
 # =============== Aliases ===============
