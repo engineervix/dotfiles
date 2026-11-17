@@ -4,3 +4,10 @@ wrap = "yes"
 [mgr]
 ratio = [1, 3, 5]
 show_hidden = true
+
+# Always nvim. The default is `${EDITOR:-vi}`, and EDITOR is only exported in
+# .zshrc, so a yazi started outside an interactive zsh falls back to vi (vim).
+[opener]
+edit = [
+	{ run = "nvim %s", desc = "nvim", for = "unix", block = true },
+]
