@@ -22,8 +22,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 setopt extended_history    # Save timestamps to history file
-setopt appendhistory
-setopt incappendhistory
+# No appendhistory (on by default) or incappendhistory: sharehistory above already
+# appends each command as it's entered, and zsh says to turn the latter off.
 setopt histignorealldups
 setopt histignoredups
 setopt histignorespace
