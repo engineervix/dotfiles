@@ -108,7 +108,10 @@ done
 compinit -C
 
 # =============== Carapace ===============
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+# No CARAPACE_BRIDGES on purpose. Shell bridges put carapace in front of zsh's own
+# completers for ~1800 more commands (zypper, poetry, ...) and only hand the
+# request back to zsh. fish and inshellisense aren't installed anyway. Set it
+# (e.g. 'zsh,bash') if a command you need has no zsh completer but has others.
 # Make carapace ignore case, so `fo<Tab>` finds `Foo`. It also needs the
 # matcher-list zstyle above, or zsh throws carapace's values away again.
 # carapace only matches from the start of a name: `oo<Tab>` won't find `Foo`.
