@@ -46,7 +46,7 @@ hl.bind(mainMod .. " + Print",         hl.dsp.exec_cmd("grim -g \"$(slurp -d)\" 
 -- slurp also selects a whole output on click, so this covers full-screen too.
 -- Full path to satty: it lives in ~/.cargo/bin, which is only on PATH via
 -- shell rc files — Hyprland's own process env never sources those.
-hl.bind(mainMod .. " + ALT + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" -t ppm - | $HOME/.cargo/bin/satty --filename -"))
+hl.bind(mainMod .. " + CTRL + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" -t ppm - | $HOME/.cargo/bin/satty --filename -"))
 
 -- Clipboard History
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p \"Clipboard\" | cliphist decode | wl-copy"))
